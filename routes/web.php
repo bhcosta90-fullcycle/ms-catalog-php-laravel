@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category as ModelsCategory;
 use BRCas\MV\Domain\Entity\Category;
 use Illuminate\Support\Facades\Route;
 

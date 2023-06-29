@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php.git",
-                "reference": "e52f7287d0efedd23a948d28c7c17c9aebaf5a7c"
+                "reference": "9e07730bd5a198e8217f94e76bcff64ef7d7dbb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bhcosta90-fullcycle/package-ms-catalog-php/zipball/e52f7287d0efedd23a948d28c7c17c9aebaf5a7c",
-                "reference": "e52f7287d0efedd23a948d28c7c17c9aebaf5a7c",
+                "url": "https://api.github.com/repos/bhcosta90-fullcycle/package-ms-catalog-php/zipball/9e07730bd5a198e8217f94e76bcff64ef7d7dbb9",
+                "reference": "9e07730bd5a198e8217f94e76bcff64ef7d7dbb9",
                 "shasum": ""
             },
             "require": {
@@ -46,11 +46,12 @@
                     "email": "bruno.costa@dafiti.com.br"
                 }
             ],
+            "description": "Pacote de domínio para o ambiente de vídeos da full-cycle",
             "support": {
                 "source": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php/tree/master",
                 "issues": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php/issues"
             },
-            "time": "2023-06-29T14:14:40+00:00"
+            "time": "2023-06-29T14:20:01+00:00"
         },
         {
             "name": "brick/math",

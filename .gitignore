@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 /.data
 *bkp*
+infection.log

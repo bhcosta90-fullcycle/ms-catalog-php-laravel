@@ -67,8 +67,7 @@ class CategoryRepositoryEloquent implements CategoryRepositoryInterface
     }
 
     protected function findByModel(string $id): Model {
-        $model = ModelCategory::find($id);
-        if (empty($model)) {
+        if (!$model = ModelCategory::find($id)) {
             throw new EntityNotFoundException();
         }
 

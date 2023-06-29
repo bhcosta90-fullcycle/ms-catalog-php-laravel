@@ -1,15 +1,16 @@
 <?php
 
-use App\Models\Category as Model;
-$endpoint = "/categories";
+use App\Models\Category;
+use App\Models\Genre as Model;
+$endpoint = "/genres";
 
-test("listando todas as categorias quando está vázia", function () use($endpoint) {
+test("listando todas as gêneros quando está vázia", function () use($endpoint) {
     $response = $this->get($endpoint);
     $response->assertStatus(200);
     $response->assertJsonCount(0, 'data');
 });
 
-test("listando todas as categorias", function () use($endpoint) {
+test("listando todas as gêneros", function () use($endpoint) {
     Model::factory(50)->create();
     $response = $this->get($endpoint);
     $response->assertStatus(200);
@@ -47,7 +48,7 @@ test("listando um registro na nossa base de dados", function () use($endpoint) {
     $response->assertStatus(200);
 });
 
-test("cadastrando um novo registro em nossa base de dados", function () use($endpoint) {
+test("cadastrando um novo registro em nossa base de dados", function () use ($endpoint) {
     $response = $this->postJson($endpoint, [
         'name' => 'testing',
     ]);
@@ -55,48 +56,55 @@ test("cadastrando um novo registro em nossa base de dados", function () use($end
         ->assertJsonStructure([
             'data' => [
                 'name',
-                'description',
                 'is_active',
                 'created_at',
             ],
         ]);
 
     $this->assertEquals('testing', $response['data']['name']);
-    $this->assertEquals(null, $response['data']['description']);
     $this->assertEquals(true, $response['data']['is_active']);
-    $this->assertDatabaseHas('categories', [
+    $this->assertDatabaseHas('genres', [
         'id' => $response['data']['id'],
         'name' => 'testing',
-        'description' => null,
         'is_active' => true,
     ]);
+});
+
+test("cadastrando um novo registro em nossa base de dados com categorias", function () use ($endpoint) {
+    $categories = Category::factory(2)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
 
     $response = $this->postJson($endpoint, [
         'name' => 'testing',
-        'description' => 'testing',
-        'is_active' => false,
+        'categories' => $categories,
     ]);
+    $response->assertStatus(201)
+        ->assertJsonStructure([
+            'data' => [
+                'name',
+                'is_active',
+                'created_at',
+            ],
+        ]);
+
     $this->assertEquals('testing', $response['data']['name']);
-    $this->assertEquals('testing', $response['data']['description']);
-    $this->assertEquals(false, $response['data']['is_active']);
-    $this->assertDatabaseHas('categories', [
+    $this->assertEquals(true, $response['data']['is_active']);
+    $this->assertDatabaseHas('genres', [
         'id' => $response['data']['id'],
         'name' => 'testing',
-        'description' => 'testing',
-        'is_active' => false,
+        'is_active' => true,
     ]);
+    $this->assertDatabaseCount('category_genre', 2);
 });
 
 test("atualizando um registro que não foi encontrado", function () use($endpoint) {
     $response = $this->putJson($endpoint . '/fake-id', [
         'name' => 'testing',
-        'description' => 'testing',
         'is_active' => false,
     ]);
     $response->assertStatus(404);
 });
 
-test("atualizando um registro", function () use($endpoint) {
+test("atualizando um registro", function () use ($endpoint) {
     $model = Model::factory()->create();
 
     $response = $this->putJson($endpoint . '/' . $model->id, [
@@ -108,21 +116,47 @@ test("atualizando um registro", function () use($endpoint) {
         ->assertJsonStructure([
             'data' => [
                 'name',
-                'description',
                 'is_active',
                 'created_at',
             ],
         ]);
 
     $this->assertEquals('testing', $response['data']['name']);
-    $this->assertEquals('testing', $response['data']['description']);
     $this->assertEquals(false, $response['data']['is_active']);
-    $this->assertDatabaseHas('categories', [
+    $this->assertDatabaseHas('genres', [
         'id' => $response['data']['id'],
+        'name' => 'testing',
+        'is_active' => false,
+    ]);
+});
+
+test("atualizando um registro com categorias", function () use ($endpoint) {
+    $categories = Category::factory(2)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
+    $model = Model::factory()->create();
+
+    $response = $this->putJson($endpoint . '/' . $model->id, [
         'name' => 'testing',
         'description' => 'testing',
         'is_active' => false,
+        'categories' => $categories,
     ]);
+    $response->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                'name',
+                'is_active',
+                'created_at',
+            ],
+        ]);
+
+    $this->assertEquals('testing', $response['data']['name']);
+    $this->assertEquals(false, $response['data']['is_active']);
+    $this->assertDatabaseHas('genres', [
+        'id' => $response['data']['id'],
+        'name' => 'testing',
+        'is_active' => false,
+    ]);
+    $this->assertDatabaseCount('category_genre', 2);
 });
 
 test("deletando um registro que não foi encontrado", function () use($endpoint) {
@@ -135,7 +169,7 @@ test("deletando um registro", function () use($endpoint) {
     $response = $this->deleteJson($endpoint . '/' . $model->id);
     $response->assertStatus(204);
 
-    $this->assertSoftDeleted('categories', [
+    $this->assertSoftDeleted('genres', [
         'id' => $model->id,
     ]);
 });

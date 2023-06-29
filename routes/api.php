@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\{
+    CategoryController,
+    GenreController
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +22,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::resource('categories', CategoryController::class);
+Route::resource('genres', GenreController::class);

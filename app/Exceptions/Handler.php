@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,5 +28,21 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof EntityNotFoundException) {
+            return $this->showError($e->getMessage(), Response::HTTP_NOT_FOUND);
+        }
+
+        return parent::render($request, $e);
+    }
+
+    private function showError(string $message, int $statusCode)
+    {
+        return response()->json([
+            'message' => $message,
+        ], $statusCode);
     }
 }

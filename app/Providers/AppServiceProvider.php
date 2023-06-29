@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Transactions\DatabaseTransaction;
 use BRCas\CA\UseCase\DatabaseTransactionInterface;
-use DatabaseTransaction;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

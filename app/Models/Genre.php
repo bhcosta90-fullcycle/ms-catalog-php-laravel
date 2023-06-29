@@ -22,6 +22,6 @@ class Genre extends Model
 
     public function categories()
     {
-        return $this->belongsToMany('genres');
+        return $this->belongsToMany(Category::class);
     }
 }

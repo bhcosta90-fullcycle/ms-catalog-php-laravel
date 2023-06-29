@@ -1,12 +1,13 @@
 <?php
 
-use App\Models\Category as Model;
-use App\Repositories\Eloquent\CategoryRepositoryEloquent as RepositoryEloquent;
+use App\Models\Category;
+use App\Models\Genre as Model;
+use App\Repositories\Eloquent\GenreRepositoryEloquent as RepositoryEloquent;
 use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use BRCas\CA\Repository\ItemInterface;
 use BRCas\CA\Repository\PaginateInterface;
-use BRCas\MV\Domain\Entity\Category as EntityDomain;
-use BRCas\MV\Domain\Repository\CategoryRepositoryInterface as RepositoryInterface;
+use BRCas\MV\Domain\Entity\Genre as EntityDomain;
+use BRCas\MV\Domain\Repository\GenreRepositoryInterface as RepositoryInterface;
 
 test("validando se o repositório tem o contrato", function () {
     $repository = new RepositoryEloquent(new Model());
@@ -19,10 +20,24 @@ test("inserindo na base de dados o domínio da aplicação", function () {
     $response = $repository->insert(new EntityDomain(name: 'testing'));
     expect($response)->toBeInstanceOf(EntityDomain::class);
 
-    $this->assertDatabaseHas('categories', [
+    $this->assertDatabaseHas('genres', [
         'id' => $response->id(),
         'name' => 'testing',
     ]);
+});
+test("inserindo na base de dados o domínio da aplicação vinculado com as categories", function () {
+    $categories = Category::factory(4)->create()->pluck('id')->map(fn($rs) => (string) $rs)->toArray();
+    $repository = new RepositoryEloquent(new Model());
+
+    $response = $repository->insert(new EntityDomain(name: 'testing', categories: $categories));
+    expect($response)->toBeInstanceOf(EntityDomain::class);
+
+    $this->assertDatabaseHas('genres', [
+        'id' => $response->id(),
+        'name' => 'testing',
+    ]);
+
+    $this->assertDatabaseCount('category_genre', 4);
 });
 
 test("encontrando o domínio na aplicação", function () {
@@ -88,22 +103,43 @@ test("editar os registros do domínio", function () {
     $domain = Model::factory()->create();
     $repository = new RepositoryEloquent(new Model());
     $domain = $repository->getById($domain->id);
-    $domain->update(name: 'testing', description: 'description');
+    $domain->update(name: 'testing');
     $response = $repository->update($domain);
 
     expect($response)->toBeInstanceOf(EntityDomain::class);
 
-    $this->assertDatabaseHas('categories', [
+    $this->assertDatabaseHas('genres', [
         'id' => $response->id(),
         'name' => 'testing',
-        'description' => 'description',
     ]);
+});
+
+test("editar os registros do domínio com categoria", function () {
+    $categories = Category::factory(4)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
+
+    $domain = Model::factory()->create();
+    $repository = new RepositoryEloquent(new Model());
+    $domain = $repository->getById($domain->id);
+    $domain->update(name: 'testing');
+    foreach ($categories as $category) {
+        $domain->addCategory($category);
+    }
+    $response = $repository->update($domain);
+
+    expect($response)->toBeInstanceOf(EntityDomain::class);
+
+    $this->assertDatabaseHas('genres', [
+        'id' => $response->id(),
+        'name' => 'testing',
+    ]);
+
+    $this->assertDatabaseCount('category_genre', 4);
 });
 
 test("editar um domínio que não foi encontrado na aplicação", function () {
     $repository = new RepositoryEloquent(new Model());
     $domain = new EntityDomain(name: 'testing');
-    $domain->update(name: 'testing', description: 'description');
+    $domain->update(name: 'testing');
     $repository->update($domain);
 })->throws(EntityNotFoundException::class);
 
@@ -115,7 +151,7 @@ test("deletar o domínio", function () {
 
     expect($response)->toBeTrue();
 
-    $this->assertSoftDeleted('categories', [
+    $this->assertSoftDeleted('genres', [
         'id' => $domain->id(),
     ]);
 });
@@ -125,15 +161,3 @@ test("deletar o domínio que não foi encontrado na aplicação", function () {
     $domain = new EntityDomain(name: 'testing');
     $repository->delete($domain);
 })->throws(EntityNotFoundException::class);
-
-test("testando se existe algumas determinadas categorias na base de dados", function () {
-    $categories = Model::factory(4)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
-
-    $repository = new RepositoryEloquent(new Model());
-    expect($repository->getIdsByListId([$categories[0]])->items())->toHaveCount(1);
-});
-
-test("testando se não existe uma categoria passada", function () {
-    $repository = new RepositoryEloquent(new Model());
-    expect($repository->getIdsByListId(['123'])->items())->toHaveCount(0);
-});

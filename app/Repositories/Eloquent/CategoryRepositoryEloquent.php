@@ -70,7 +70,7 @@ class CategoryRepositoryEloquent implements CategoryRepositoryInterface
 
     public function getIdsByListId(array $categories = []): KeyValueInterface
     {
-        return new KeyValuePresenter($this->model, 'id', 'name');
+        return new KeyValuePresenter($this->model->whereIn('id', $categories), 'id', 'name');
     }
 
     protected function findByModel(string $id): Model {

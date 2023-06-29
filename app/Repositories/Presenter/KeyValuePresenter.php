@@ -3,22 +3,19 @@
 namespace App\Repositories\Presenter;
 
 use BRCas\CA\Repository\KeyValueInterface;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use stdClass;
 
 class KeyValuePresenter implements KeyValueInterface
 {
-    /**
-     * @return stdClass[]
-     */
-    protected array $items = [];
-
-    public function __construct(protected $data, protected $key, protected $value)
+    public function __construct(protected Builder|Model $data, protected $key, protected $value)
     {
-        dd($data);
+        //
     }
 
     public function items(): array
     {
-        return $this->items->pluck($this->value, $this->key)->toArray();
+        return $this->data->pluck($this->value, $this->key)->toArray();
     }
 }

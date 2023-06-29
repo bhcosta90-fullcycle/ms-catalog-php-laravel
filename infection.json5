@@ -3,6 +3,8 @@
     "source": {
         "directories": [
             "app/Http/Controllers",
+            "app/Models",
+            "app/Transactions",
             "app/Repositories"
         ]
     },

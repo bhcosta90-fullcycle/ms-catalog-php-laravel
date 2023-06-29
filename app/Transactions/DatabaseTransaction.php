@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Transactions;
+
 use BRCas\CA\UseCase\DatabaseTransactionInterface;
 use Illuminate\Support\Facades\DB;
 

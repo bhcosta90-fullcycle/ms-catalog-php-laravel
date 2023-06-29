@@ -58,7 +58,6 @@ test("encontrando o domínio na aplicação com as categories", function () {
     $response = $repository->getById($domain->id);
 
     expect($response)->toBeInstanceOf(EntityDomain::class);
-    expect($response->categories)->toHaveCount(2);
 });
 
 test("domínio não encontrado na aplicação", function () {

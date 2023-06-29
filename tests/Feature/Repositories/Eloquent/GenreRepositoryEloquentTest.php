@@ -48,6 +48,19 @@ test("encontrando o domínio na aplicação", function () {
     expect($response)->toBeInstanceOf(EntityDomain::class);
 });
 
+test("encontrando o domínio na aplicação com as categories", function () {
+    $categories = Category::factory(2)->create()->pluck('id')->map(fn($rs) => (string) $rs)->toArray();
+
+    $domain = Model::factory()->create();
+    $domain->categories()->sync($categories);
+
+    $repository = new RepositoryEloquent(new Model());
+    $response = $repository->getById($domain->id);
+
+    expect($response)->toBeInstanceOf(EntityDomain::class);
+    expect($response->categories)->toHaveCount(2);
+});
+
 test("domínio não encontrado na aplicação", function () {
     $repository = new RepositoryEloquent(new Model());
     $repository->getById('fake-value');

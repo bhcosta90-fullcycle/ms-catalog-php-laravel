@@ -83,7 +83,7 @@ class GenreRepositoryEloquent implements GenreRepositoryInterface
             name: $model->name,
             isActive: $model->is_active,
             createdAt: $model->created_at,
-            categories: [],
+            categories: $model->categories->pluck('id')->toArray(),
         );
     }
 }

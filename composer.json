@@ -1,7 +1,7 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Integração do domínio de vídeos com o framework laravel",
     "keywords": [
         "laravel",
         "framework"

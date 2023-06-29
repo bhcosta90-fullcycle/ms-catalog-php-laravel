@@ -21,5 +21,5 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::resource('categories', CategoryController::class);
-Route::resource('genres', GenreController::class);
+Route::apiResource('categories', CategoryController::class);
+Route::apiResource('genres', GenreController::class);

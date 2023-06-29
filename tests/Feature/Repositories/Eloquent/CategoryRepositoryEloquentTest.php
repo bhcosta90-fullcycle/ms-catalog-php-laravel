@@ -38,7 +38,7 @@ test("domínio não encontrado na aplicação", function () {
     $repository->getById('fake-value');
 })->throws(EntityNotFoundException::class);
 
-test("listar todos os dados do domínio", function () {
+test("listar todos os registros do domínio", function () {
     Model::factory(10)->create();
     $repository = new RepositoryEloquent(new Model());
     $response = $repository->all();
@@ -47,7 +47,7 @@ test("listar todos os dados do domínio", function () {
     expect($response->items())->toHaveCount(10);
 });
 
-test("listar todos os dados do domínio quando estiver vazio", function () {
+test("listar todos os registros do domínio quando estiver vazio", function () {
     $repository = new RepositoryEloquent(new Model());
     $response = $repository->all();
     expect($response)->toBeInstanceOf(ItemInterface::class);
@@ -55,7 +55,7 @@ test("listar todos os dados do domínio quando estiver vazio", function () {
     expect($response->items())->toHaveCount(0);
 });
 
-test("listar todos os dados paginados do domínio", function () {
+test("listar todos os registros paginados do domínio", function () {
     Model::factory(20)->create();
     $repository = new RepositoryEloquent(new Model());
     $response = $repository->paginate();
@@ -70,7 +70,7 @@ test("listar todos os dados paginados do domínio", function () {
     expect($response->perPage())->toBe(15);
 });
 
-test("listar todos os dados paginados do domínio quando estiver vazio", function () {
+test("listar todos os registros paginados do domínio quando estiver vazio", function () {
     $repository = new RepositoryEloquent(new Model());
     $response = $repository->paginate();
     expect($response)->toBeInstanceOf(PaginateInterface::class);
@@ -84,7 +84,7 @@ test("listar todos os dados paginados do domínio quando estiver vazio", functio
     expect($response->perPage())->toBe(15);
 });
 
-test("editar os dados do domínio", function () {
+test("editar os registros do domínio", function () {
     $domain = Model::factory()->create();
     $repository = new RepositoryEloquent(new Model());
     $domain = $repository->getById($domain->id);

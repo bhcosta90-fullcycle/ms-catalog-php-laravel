@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CategoryResource;
 use BRCas\MV\UseCases\Category as UseCase;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -24,10 +26,41 @@ class CategoryController extends Controller
             ]);
     }
 
-    public function show(UseCase\ListCategoryUseCase $listCategoryUseCase, string $id){
+    public function show(UseCase\ListCategoryUseCase $listCategoryUseCase, string $id)
+    {
         $response = $listCategoryUseCase->execute(new UseCase\DTO\ListCategory\Input(
             id: $id,
         ));
         return new CategoryResource($response);
+    }
+
+    public function store(UseCase\CreateCategoryUseCase $createCategoryUseCase, Request $request)
+    {
+        $response = $createCategoryUseCase->execute(new UseCase\DTO\CreateCategory\Input(
+            name: $request->name,
+            description: $request->description,
+            isActive: $request->is_active ?? true,
+        ));
+
+        return (new CategoryResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
+    }
+
+    public function update(UseCase\UpdateCategoryUseCase $updateCategoryUseCase, Request $request, string $id) {
+        $response = $updateCategoryUseCase->execute(new UseCase\DTO\UpdateCategory\Input(
+            id: $id,
+            name: $request->name,
+            description: $request->description,
+            isActive: $request->is_active ?? true,
+        ));
+
+        return new CategoryResource($response);
+    }
+
+    public function destroy(UseCase\DeleteCategoryUseCase $deleteCategoryUseCase, string $id) {
+        $response = $deleteCategoryUseCase->execute(new UseCase\DTO\DeleteCategory\Input(
+            id: $id,
+        ));
+
+        return response()->noContent();
     }
 }

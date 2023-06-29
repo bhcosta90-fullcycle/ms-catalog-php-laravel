@@ -1,5 +1,6 @@
 <?php
 
+use BRCas\MV\Domain\Entity\Category;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $category = new Category(name: 'testing');
+    return view('welcome', compact('category'));
 });

@@ -23,7 +23,7 @@ class GenreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:3', 'max:120'],
-            'categories' => ['nullable', 'exists:categories,id,deleted_at,NULL'],
+            'categories' => ['nullable', 'array', 'exists:categories,id,deleted_at,NULL'],
             'is_active' => ['nullable', 'boolean'],
         ];
     }

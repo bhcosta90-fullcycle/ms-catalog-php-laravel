@@ -82,6 +82,7 @@ test("atualizando um registro", function () {
         'description' => 'testing',
         'is_active' => false,
     ]);
+    $response->assertStatus(200);
 
     $this->assertEquals('testing', $response['data']['name']);
     $this->assertEquals('testing', $response['data']['description']);

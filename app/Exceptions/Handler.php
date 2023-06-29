@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
+use BRCas\CA\Domain\Exceptions\EntityValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
 use Throwable;
@@ -34,6 +35,10 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof EntityNotFoundException) {
             return $this->showError($e->getMessage(), Response::HTTP_NOT_FOUND);
+        }
+
+        if ($e instanceof EntityValidationException) {
+            return $this->showError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return parent::render($request, $e);

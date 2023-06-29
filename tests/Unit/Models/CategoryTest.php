@@ -5,16 +5,16 @@ use App\Models\Traits\UuidTrait;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Tests\Unit\app\Models\Actions\ModelTestCase;
+use Tests\Unit\Models\Actions\ModelTestCase;
 
-test('if use traits', function () {
+test('testando se o model tem as traits', function () {
     ModelTestCase::make(new Model)->traits([HasFactory::class, SoftDeletes::class, UuidTrait::class]);
 });
 
-test('if use fillable', function () {
-    ModelTestCase::make(new Model)->fillable(['id', 'name', 'is_active']);
+test('testando se o model tem os fillable', function () {
+    ModelTestCase::make(new Model)->fillable(['id', 'name', 'description', 'is_active']);
 });
 
-test('if use casts', function () {
+test('testando se o model tem os casts', function () {
     ModelTestCase::make(new Model)->casts(['is_active' => 'boolean', 'deleted_at' => 'datetime']);
 });

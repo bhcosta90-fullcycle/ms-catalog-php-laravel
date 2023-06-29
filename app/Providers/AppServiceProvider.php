@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use BRCas\CA\UseCase\DatabaseTransactionInterface;
+use DatabaseTransaction;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,6 +17,8 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
+
+        $this->app->bind(DatabaseTransactionInterface::class, DatabaseTransaction::class);
     }
 
     /**

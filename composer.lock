@@ -12,18 +12,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php.git",
-                "reference": "ef2966e4129c2962d7177f2f472eb878991f63c4"
+                "reference": "c04e18a6aa99f3e561232ef86ae7cf9497fb11bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bhcosta90-fullcycle/package-ms-catalog-php/zipball/ef2966e4129c2962d7177f2f472eb878991f63c4",
-                "reference": "ef2966e4129c2962d7177f2f472eb878991f63c4",
+                "url": "https://api.github.com/repos/bhcosta90-fullcycle/package-ms-catalog-php/zipball/c04e18a6aa99f3e561232ef86ae7cf9497fb11bd",
+                "reference": "c04e18a6aa99f3e561232ef86ae7cf9497fb11bd",
                 "shasum": ""
             },
             "require": {
                 "ramsey/uuid": "^4.7"
             },
             "require-dev": {
+                "infection/infection": "^0.27.0",
                 "mockery/mockery": "^1.6",
                 "pestphp/pest": "^2.8",
                 "pestphp/pest-plugin-watch": "^2.0",
@@ -36,6 +37,12 @@
                     "BRCas\\MV\\": "src/",
                     "BRCas\\CA\\": "shared/src/"
                 }
+            },
+            "scripts": {
+                "tests": [
+                    "./vendor/bin/pest",
+                    "./vendor/bin/infection --test-framework=pest"
+                ]
             },
             "license": [
                 "MIT"
@@ -51,7 +58,7 @@
                 "source": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php/tree/master",
                 "issues": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php/issues"
             },
-            "time": "2023-06-29T15:18:25+00:00"
+            "time": "2023-06-29T19:36:26+00:00"
         },
         {
             "name": "brick/math",

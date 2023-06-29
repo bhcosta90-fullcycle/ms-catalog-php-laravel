@@ -8,7 +8,7 @@ test("testando a integração do caso de uso para deletar", function () {
     $domain = Model::factory()->create();
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\DeleteCategoryUseCase(repository: $repository);
-    $useCase->execute(new UseCase\DTO\DeleteCategory\Input(
+    $useCase->execute(new UseCase\DTO\CategoryInput(
         id: $domain->id,
     ));
 

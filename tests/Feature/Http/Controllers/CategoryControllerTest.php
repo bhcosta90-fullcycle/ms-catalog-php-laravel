@@ -132,7 +132,7 @@ test("deletando um registro que não foi encontrado", function () use($endpoint)
 
 test("deletando um registro", function () use($endpoint) {
     $category = Model::factory()->create();
-    $response = $this->deleteJson('/categories/' . $category->id);
+    $response = $this->deleteJson($endpoint . '/' . $category->id);
     $response->assertStatus(204);
 
     $this->assertSoftDeleted('categories', [

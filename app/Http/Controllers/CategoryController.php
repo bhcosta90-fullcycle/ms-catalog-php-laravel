@@ -29,7 +29,7 @@ class CategoryController extends Controller
 
     public function show(UseCase\ListCategoryUseCase $listCategoryUseCase, string $id)
     {
-        $response = $listCategoryUseCase->execute(new UseCase\DTO\ListCategory\Input(
+        $response = $listCategoryUseCase->execute(new UseCase\DTO\CategoryInput(
             id: $id,
         ));
         return new CategoryResource($response);
@@ -58,7 +58,7 @@ class CategoryController extends Controller
     }
 
     public function destroy(UseCase\DeleteCategoryUseCase $deleteCategoryUseCase, string $id) {
-        $deleteCategoryUseCase->execute(new UseCase\DTO\DeleteCategory\Input(
+        $deleteCategoryUseCase->execute(new UseCase\DTO\CategoryInput(
             id: $id,
         ));
 

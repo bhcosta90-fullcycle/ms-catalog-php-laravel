@@ -4,9 +4,11 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Category as ModelCategory;
 use App\Repositories\Presenter\ItemPresenter;
+use App\Repositories\Presenter\KeyValuePresenter;
 use App\Repositories\Presenter\PaginationPresenter;
 use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use BRCas\CA\Repository\ItemInterface;
+use BRCas\CA\Repository\KeyValueInterface;
 use BRCas\CA\Repository\PaginateInterface;
 use BRCas\MV\Domain\Entity\Category;
 use BRCas\MV\Domain\Repository\CategoryRepositoryInterface;
@@ -64,6 +66,11 @@ class CategoryRepositoryEloquent implements CategoryRepositoryInterface
     {
         $model = $this->findByModel($category->id);
         return $model->delete();
+    }
+
+    public function getIdsByListId(array $categories = []): KeyValueInterface
+    {
+        return new KeyValuePresenter($this->model, 'id', 'name');
     }
 
     protected function findByModel(string $id): Model {

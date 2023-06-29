@@ -8,7 +8,7 @@ test("testando a integração do caso de uso para buscar o domínio", function (
     $domain = Model::factory()->create();
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\ListCategoryUseCase(repository: $repository);
-    $response = $useCase->execute(new UseCase\DTO\ListCategory\Input(
+    $response = $useCase->execute(new UseCase\DTO\CategoryInput(
         id: $domain->id,
     ));
 

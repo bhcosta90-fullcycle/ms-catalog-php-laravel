@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php.git",
-                "reference": "c04e18a6aa99f3e561232ef86ae7cf9497fb11bd"
+                "reference": "fc1f8ca3f0b51a25ce8405a8aac8dc49d8b44a76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bhcosta90-fullcycle/package-ms-catalog-php/zipball/c04e18a6aa99f3e561232ef86ae7cf9497fb11bd",
-                "reference": "c04e18a6aa99f3e561232ef86ae7cf9497fb11bd",
+                "url": "https://api.github.com/repos/bhcosta90-fullcycle/package-ms-catalog-php/zipball/fc1f8ca3f0b51a25ce8405a8aac8dc49d8b44a76",
+                "reference": "fc1f8ca3f0b51a25ce8405a8aac8dc49d8b44a76",
                 "shasum": ""
             },
             "require": {
@@ -40,7 +40,7 @@
             },
             "scripts": {
                 "tests": [
-                    "./vendor/bin/pest",
+                    "./vendor/bin/pest --parallel",
                     "./vendor/bin/infection --test-framework=pest"
                 ]
             },
@@ -58,7 +58,7 @@
                 "source": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php/tree/master",
                 "issues": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php/issues"
             },
-            "time": "2023-06-29T19:36:26+00:00"
+            "time": "2023-06-30T00:11:07+00:00"
         },
         {
             "name": "brick/math",

@@ -54,7 +54,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "tests": [
+        "test": [
             "./vendor/bin/pest --parallel",
             "./vendor/bin/infection --test-framework=pest"
         ]

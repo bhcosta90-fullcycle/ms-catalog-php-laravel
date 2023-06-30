@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Repositories\Eloquent\{
+    CastMemberRepositoryEloquent,
     CategoryRepositoryEloquent,
     GenreRepositoryEloquent
 };
 use BRCas\MV\Domain\Repository\{
+    CastMemberRepositoryInterface,
     CategoryRepositoryInterface,
     GenreRepositoryInterface
 };
@@ -21,6 +23,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->singleton(CategoryRepositoryInterface::class, CategoryRepositoryEloquent::class);
         $this->app->singleton(GenreRepositoryInterface::class, GenreRepositoryEloquent::class);
+        $this->app->singleton(CastMemberRepositoryInterface::class, CastMemberRepositoryEloquent::class);
     }
 
     /**

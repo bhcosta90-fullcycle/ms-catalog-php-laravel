@@ -11,6 +11,7 @@ use BRCas\CA\Domain\Abstracts\EntityAbstract;
 use BRCas\CA\Domain\ValueObject\Uuid;
 use BRCas\CA\Repository\ItemInterface;
 use BRCas\CA\Repository\PaginateInterface;
+use BRCas\MV\Domain\Builder\Video\UpdateBuilderVideo;
 use BRCas\MV\Domain\Entity\Video;
 use BRCas\MV\Domain\Enum\MediaStatus;
 use BRCas\MV\Domain\Enum\Rating;
@@ -130,34 +131,37 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
             castMembers: $model->castMember->pluck('id')->toArray(),
         );
 
+        $builder = new UpdateBuilderVideo();
+        $builder->createEntity($domain);
+
         if ($data = $model->trailer) {
-            $domain->setTrailerFile(new Media(
+            $builder->addMediaTrailer(
                 path: $data->file_path,
                 status: MediaStatus::from($data->media_status),
-                encoded: $model->encoded_path
-            ));
+                encoded: $model->encoded_path,
+            );
         }
 
         if ($data = $model->video) {
-            $domain->setVideoFile(new Media(
+            $builder->addMediaVideo(
                 path: $data->file_path,
                 status: MediaStatus::from($data->media_status),
-                encoded: $model->encoded_path
-            ));
+                encoded: $model->encoded_path,
+            );
         }
 
         if ($data = $model->banner) {
-            $domain->setBannerFile(new Image(image: $data->path));
+            $builder->addImageBanner($data->path);
         }
 
         if ($data = $model->thumb) {
-            $domain->setThumbFile(new Image(image: $data->path));
+            $builder->addImageThumb($data->path);
         }
 
         if ($data = $model->half) {
-            $domain->setThumbHalf(new Image(image: $data->path));
+            $builder->addImageThumbHalf($data->path);
         }
 
-        return $domain;
+        return $builder->getEntity();
     }
 }

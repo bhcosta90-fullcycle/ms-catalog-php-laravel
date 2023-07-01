@@ -8,6 +8,7 @@ use App\Models\Video as ModelsVideo;
 use App\Repositories\Presenter\ItemPresenter;
 use App\Repositories\Presenter\PaginationPresenter;
 use BRCas\CA\Domain\Abstracts\EntityAbstract;
+use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use BRCas\CA\Domain\ValueObject\Uuid;
 use BRCas\CA\Repository\ItemInterface;
 use BRCas\CA\Repository\PaginateInterface;

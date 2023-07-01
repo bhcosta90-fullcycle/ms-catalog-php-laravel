@@ -1,17 +1,18 @@
 <?php
 
 use App\Models\Category as Model;
-$endpoint = "/categories";
 
-test("listando todas as categorias quando está vázia", function () use($endpoint) {
-    $response = $this->get($endpoint);
+beforeEach(fn () => $this->endpoint = "/categories");
+
+test("listando todas as categorias quando está vázia", function () {
+    $response = $this->get($this->endpoint);
     $response->assertStatus(200);
     $response->assertJsonCount(0, 'data');
 });
 
-test("listando todas as categorias", function () use($endpoint) {
+test("listando todas as categorias", function () {
     Model::factory(50)->create();
-    $response = $this->get($endpoint);
+    $response = $this->get($this->endpoint);
     $response->assertStatus(200);
     $response->assertJsonStructure([
         'meta' => [
@@ -27,28 +28,28 @@ test("listando todas as categorias", function () use($endpoint) {
     $response->assertJsonCount(15, 'data');
 });
 
-test("listando a quarta página dos registros", function () use($endpoint) {
+test("listando a quarta página dos registros", function () {
     Model::factory(50)->create();
-    $response = $this->get($endpoint . '?page=4');
+    $response = $this->get($this->endpoint . '?page=4');
     $response->assertStatus(200);
     $this->assertEquals(4, $response['meta']['current_page']);
     $this->assertEquals(50, $response['meta']['total']);
     $response->assertJsonCount(5, 'data');
 });
 
-test("listando um registro que não existe em nossa base de dados", function () use($endpoint) {
-    $response = $this->get($endpoint . '/fake-value');
+test("listando um registro que não existe em nossa base de dados", function () {
+    $response = $this->get($this->endpoint . '/fake-value');
     $response->assertStatus(404);
 });
 
-test("listando um registro na nossa base de dados", function () use($endpoint) {
+test("listando um registro na nossa base de dados", function () {
     $model = Model::factory()->create();
-    $response = $this->get($endpoint . '/' . $model->id);
+    $response = $this->get($this->endpoint . '/' . $model->id);
     $response->assertStatus(200);
 });
 
-test("cadastrando um novo registro em nossa base de dados", function () use($endpoint) {
-    $response = $this->postJson($endpoint, [
+test("cadastrando um novo registro em nossa base de dados", function () {
+    $response = $this->postJson($this->endpoint, [
         'name' => 'testing',
     ]);
     $response->assertStatus(201)
@@ -71,7 +72,7 @@ test("cadastrando um novo registro em nossa base de dados", function () use($end
         'is_active' => true,
     ]);
 
-    $response = $this->postJson($endpoint, [
+    $response = $this->postJson($this->endpoint, [
         'name' => 'testing',
         'description' => 'testing',
         'is_active' => false,
@@ -87,8 +88,8 @@ test("cadastrando um novo registro em nossa base de dados", function () use($end
     ]);
 });
 
-test("atualizando um registro que não foi encontrado", function () use($endpoint) {
-    $response = $this->putJson($endpoint . '/fake-id', [
+test("atualizando um registro que não foi encontrado", function () {
+    $response = $this->putJson($this->endpoint . '/fake-id', [
         'name' => 'testing',
         'description' => 'testing',
         'is_active' => false,
@@ -96,10 +97,10 @@ test("atualizando um registro que não foi encontrado", function () use($endpoin
     $response->assertStatus(404);
 });
 
-test("atualizando um registro", function () use($endpoint) {
+test("atualizando um registro", function () {
     $model = Model::factory()->create();
 
-    $response = $this->putJson($endpoint . '/' . $model->id, [
+    $response = $this->putJson($this->endpoint . '/' . $model->id, [
         'name' => 'testing',
         'description' => 'testing',
         'is_active' => false,
@@ -125,14 +126,14 @@ test("atualizando um registro", function () use($endpoint) {
     ]);
 });
 
-test("deletando um registro que não foi encontrado", function () use($endpoint) {
-    $response = $this->deleteJson($endpoint . '/fake-id');
+test("deletando um registro que não foi encontrado", function () {
+    $response = $this->deleteJson($this->endpoint . '/fake-id');
     $response->assertStatus(404);
 });
 
-test("deletando um registro", function () use($endpoint) {
+test("deletando um registro", function () {
     $model = Model::factory()->create();
-    $response = $this->deleteJson($endpoint . '/' . $model->id);
+    $response = $this->deleteJson($this->endpoint . '/' . $model->id);
     $response->assertStatus(204);
 
     $this->assertSoftDeleted('categories', [

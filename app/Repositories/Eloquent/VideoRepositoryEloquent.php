@@ -58,7 +58,18 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
 
     public function paginate(): PaginateInterface
     {
-        return new PaginationPresenter($this->model->paginate());
+        return new PaginationPresenter($this->model
+            ->with([
+                'categories',
+                'genres',
+                'castMember',
+                'video',
+                'trailer',
+                'banner',
+                'thumb',
+                'half',
+            ])
+            ->paginate());
     }
 
     public function getById(string $id): EntityAbstract

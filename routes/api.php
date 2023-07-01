@@ -3,7 +3,8 @@
 use App\Http\Controllers\{
     CastMemberController,
     CategoryController,
-    GenreController
+    GenreController,
+    VideoController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -27,3 +28,4 @@ Route::get('upload-file', fn() => Storage::put('content', 'tests'));
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('genres', GenreController::class);
 Route::apiResource('cast-members', CastMemberController::class);
+Route::apiResource('videos', VideoController::class);

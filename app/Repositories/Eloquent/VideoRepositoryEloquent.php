@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Enums\ImageTypes;
+use App\Enums\MediaTypes;
 use App\Models\Video as ModelsVideo;
 use App\Repositories\Presenter\ItemPresenter;
 use App\Repositories\Presenter\PaginationPresenter;
@@ -10,8 +12,11 @@ use BRCas\CA\Domain\ValueObject\Uuid;
 use BRCas\CA\Repository\ItemInterface;
 use BRCas\CA\Repository\PaginateInterface;
 use BRCas\MV\Domain\Entity\Video;
+use BRCas\MV\Domain\Enum\MediaStatus;
 use BRCas\MV\Domain\Enum\Rating;
 use BRCas\MV\Domain\Repository\VideoRepositoryInterface;
+use BRCas\MV\Domain\ValueObject\Image;
+use BRCas\MV\Domain\ValueObject\Media;
 use DateTime;
 
 class VideoRepositoryEloquent implements VideoRepositoryInterface
@@ -105,6 +110,47 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
                 'file_path' => $data->path,
                 'media_status' => $data->status->value,
                 'encoded_path' => $data->encoded,
+                'type' => MediaTypes::TRAILER,
+            ], [
+                'video_id' => $video->id(),
+            ]);
+        }
+
+        if ($data = $video->videoFile()) {
+            $entity->trailer()->updateOrCreate([
+                'file_path' => $data->path,
+                'media_status' => $data->status->value,
+                'encoded_path' => $data->encoded,
+                'type' => MediaTypes::VIDEO,
+            ], [
+                'video_id' => $video->id(),
+            ]);
+        }
+
+        if ($data = $video->bannerFile()) {
+            $entity->banner()->updateOrCreate([
+                'path' => $data->path(),
+                'type' => ImageTypes::BANNER,
+            ], [
+                'video_id' => $video->id(),
+            ]);
+        }
+
+        if ($data = $video->thumbFile()) {
+            $entity->thumb()->updateOrCreate([
+                'path' => $data->path(),
+                'type' => ImageTypes::THUMB,
+            ], [
+                'video_id' => $video->id(),
+            ]);
+        }
+
+        if ($data = $video->thumbHalf()) {
+            $entity->half()->updateOrCreate([
+                'path' => $data->path(),
+                'type' => ImageTypes::THUMB_HALF,
+            ], [
+                'video_id' => $video->id(),
             ]);
         }
     }
@@ -123,6 +169,23 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
             categories: $model->categories->pluck('id')->toArray(),
             genres: $model->genres->pluck('id')->toArray(),
             castMembers: $model->castMember->pluck('id')->toArray(),
+            thumbHalf: $model->half ? new Image(image: $model->half->path) : null,
+            thumbFile: $model->thumb ? new Image(image: $model->thumb->path) : null,
+            bannerFile: $model->banner ? new Image(image: $model->banner->path) : null,
+            videoFile: $model->video
+                ? new Media(
+                    path: $model->video->file_path,
+                    status: MediaStatus::from($model->video->media_status),
+                    encoded: $model->encoded_path
+                )
+                : null,
+            trailerFile: $model->trailer
+                ? new Media(
+                    path: $model->trailer->file_path,
+                    status: MediaStatus::from($model->trailer->media_status),
+                    encoded: $model->encoded_path
+                )
+                : null,
         );
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ImageTypes;
+use App\Enums\MediaTypes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -56,19 +58,19 @@ class Video extends Model
 
     public function banner()
     {
-        return $this->hasOne(ImageVideo::class)
+        return $this->hasOne(Image::class)
             ->where('type', (string) ImageTypes::BANNER->value);
     }
 
     public function thumb()
     {
-        return $this->hasOne(ImageVideo::class)
+        return $this->hasOne(Image::class)
             ->where('type', (string) ImageTypes::THUMB->value);
     }
 
     public function half()
     {
-        return $this->hasOne(ImageVideo::class)
+        return $this->hasOne(Image::class)
             ->where('type', (string) ImageTypes::THUMB_HALF->value);
     }
 }

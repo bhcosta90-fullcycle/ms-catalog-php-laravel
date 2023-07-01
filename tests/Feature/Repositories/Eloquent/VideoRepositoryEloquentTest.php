@@ -9,7 +9,10 @@ use BRCas\CA\Repository\ItemInterface;
 use BRCas\CA\Repository\PaginateInterface;
 use BRCas\MV\Domain\Repository\VideoRepositoryInterface as RepositoryInterface;
 use BRCas\MV\Domain\Entity\Video as EntityDomain;
+use BRCas\MV\Domain\Enum\MediaStatus;
 use BRCas\MV\Domain\Enum\Rating;
+use BRCas\MV\Domain\ValueObject\Image;
+use BRCas\MV\Domain\ValueObject\Media;
 
 test("validando se o repositório tem o contrato", function () {
     $repository = new RepositoryEloquent(new Model());
@@ -215,3 +218,98 @@ test("editar um domínio que não foi encontrado na aplicação", function () {
     $domain->update(title: 'testing', description: 'testing');
     $repository->update($domain);
 })->throws(EntityNotFoundException::class);
+
+test("inserindo um registro com o trailer", function () {
+    $repository = new RepositoryEloquent(new Model());
+
+    $domain = new EntityDomain(
+        title: 'testing',
+        description: 'testing',
+        yearLaunched: 2010,
+        duration: 50,
+        opened: true,
+        rating: Rating::L,
+        trailerFile: new Media(path: 'testing.mp4', status: MediaStatus::PENDING),
+    );
+
+    $response = $repository->insert($domain);
+
+    expect($response->trailerFile->path)->toBe('testing.mp4');
+    expect($response->trailerFile->status->value)->toBe(2);
+    expect($response->trailerFile->encoded)->toBeNull();
+});
+
+test("inserindo um registro com o video", function () {
+    $repository = new RepositoryEloquent(new Model());
+
+    $domain = new EntityDomain(
+        title: 'testing',
+        description: 'testing',
+        yearLaunched: 2010,
+        duration: 50,
+        opened: true,
+        rating: Rating::L,
+        videoFile: new Media(path: 'testing.mp4', status: MediaStatus::PENDING),
+    );
+
+    $response = $repository->insert($domain);
+
+    expect($response->videoFile->path)->toBe('testing.mp4');
+    expect($response->videoFile->status->value)->toBe(2);
+    expect($response->videoFile->encoded)->toBeNull();
+});
+
+test("inserindo um registro com o banner", function () {
+    $repository = new RepositoryEloquent(new Model());
+
+    $domain = new EntityDomain(
+        title: 'testing',
+        description: 'testing',
+        yearLaunched: 2010,
+        duration: 50,
+        opened: true,
+        rating: Rating::L,
+        bannerFile: new Image(image: 'testing.jpg'),
+    );
+
+    $response = $repository->insert($domain);
+
+    expect($response->bannerFile->path())->toBe('testing.jpg');
+});
+
+test("inserindo um registro com o thumb", function () {
+    $repository = new RepositoryEloquent(new Model());
+
+    $domain = new EntityDomain(
+        title: 'testing',
+        description: 'testing',
+        yearLaunched: 2010,
+        duration: 50,
+        opened: true,
+        rating: Rating::L,
+        thumbFile: new Image(image: 'testing.jpg'),
+    );
+
+    $response = $repository->insert($domain);
+
+    expect($response->thumbFile->path())->toBe('testing.jpg');
+
+});
+
+test("inserindo um registro com o half", function () {
+    $repository = new RepositoryEloquent(new Model());
+
+    $domain = new EntityDomain(
+        title: 'testing',
+        description: 'testing',
+        yearLaunched: 2010,
+        duration: 50,
+        opened: true,
+        rating: Rating::L,
+        thumbHalf: new Image(image: 'testing.jpg'),
+    );
+
+    $response = $repository->insert($domain);
+
+    expect($response->thumbHalf->path())->toBe('testing.jpg');
+});

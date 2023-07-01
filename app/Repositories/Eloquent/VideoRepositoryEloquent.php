@@ -159,7 +159,7 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
         }
 
         if ($data = $model->half) {
-            $builder->addImageThumbHalf($data->path);
+            $builder->addImageHalf($data->path);
         }
 
         return $builder->getEntity();

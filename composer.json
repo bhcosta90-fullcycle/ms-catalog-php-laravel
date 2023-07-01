@@ -59,7 +59,7 @@
             "./vendor/bin/infection --test-framework=pest"
         ],
         "test": [
-            "./vendor/bin/pest --parallel",
+            "./vendor/bin/pest --parallel --processes=10",
             "@infe"
         ]
     },

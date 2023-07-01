@@ -19,7 +19,7 @@ class FileStorage implements FileStorageInterface
         return Storage::delete($path);
     }
 
-    protected function convertoFileToLaravelFile(array $file): UploadedFile
+    private function convertoFileToLaravelFile(array $file): UploadedFile
     {
         return new UploadedFile(
             path: $file['tmp_name'],

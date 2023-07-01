@@ -5,7 +5,8 @@
             "app/Http/Controllers",
             "app/Models",
             "app/Transactions",
-            "app/Repositories"
+            "app/Repositories",
+            "app/Services/Storage"
         ]
     },
     "phpUnit": {

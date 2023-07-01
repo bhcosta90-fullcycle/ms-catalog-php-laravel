@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Category as ModelsCategory;
 use BRCas\MV\Domain\Entity\Category;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $category = new Category(name: 'testing');
-    return view('welcome', compact('category'));
+    return view('welcome');
 });

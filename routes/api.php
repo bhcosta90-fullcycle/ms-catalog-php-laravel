@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::get('upload-file', fn() => Storage::put('content', 'tests'));
+
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('genres', GenreController::class);
 Route::apiResource('cast-members', CastMemberController::class);

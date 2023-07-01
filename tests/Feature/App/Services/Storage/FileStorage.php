@@ -26,7 +26,6 @@ test("store", function (){
 
 test("delete", function(){
     $file = UploadedFile::fake()->create('video.mp', 1, 'video/mp4');
-
     $path = $file->store('videos');
 
     /**

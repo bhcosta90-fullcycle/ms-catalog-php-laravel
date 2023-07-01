@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\VideoEventManager;
 use App\Services\Storage\FileStorage;
 use App\Transactions\DatabaseTransaction;
 use BRCas\CA\UseCase\DatabaseTransactionInterface;
 use BRCas\CA\UseCase\FileStorageInterface;
+use BRCas\MV\UseCases\Video\Interfaces\VideoEventManagerInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(DatabaseTransactionInterface::class, DatabaseTransaction::class);
         $this->app->singleton(FileStorageInterface::class, FileStorage::class);
+        $this->app->singleton(VideoEventManagerInterface::class, VideoEventManager::class);
     }
 
     /**

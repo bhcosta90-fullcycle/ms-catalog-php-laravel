@@ -42,7 +42,12 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function converteUploadFile(\Illuminate\Http\UploadedFile $file)
 {
-    // ..
+    return [
+        'tmp_name' => $file->getPathname(),
+        'name' => $file->getClientOriginalName(),
+        'type' => $file->getType(),
+        'error' => $file->getError(),
+    ];
 }

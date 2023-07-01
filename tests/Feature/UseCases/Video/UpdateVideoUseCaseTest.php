@@ -3,7 +3,9 @@
 use App\Models\CastMember;
 use App\Models\Category;
 use App\Models\Genre;
+use App\Models\Video;
 use BRCas\CA\UseCase\DatabaseTransactionInterface;
+use BRCas\CA\UseCase\FileStorageInterface;
 use BRCas\MV\Domain\Repository\{
     CastMemberRepositoryInterface,
     CategoryRepositoryInterface,
@@ -12,8 +14,13 @@ use BRCas\MV\Domain\Repository\{
 };
 use BRCas\MV\UseCases\Video as UseCase;
 use Illuminate\Http\UploadedFile;
-use Tests\Stubs\FileStorageStub;
+use Illuminate\Support\Facades\Storage;
 use Tests\Stubs\VideoEventManagerStub;
+
+beforeEach(function(){
+    Storage::fake();
+    $this->model = Video::factory()->create();
+});
 
 test("criação de um vídeo com os relacionamentos", function ($data) {
     if (!empty($data['categories'])) {
@@ -35,23 +42,20 @@ test("criação de um vídeo com os relacionamentos", function ($data) {
     $fakeFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
     $file = converteUploadFile($fakeFile);
 
-    $useCase = new UseCase\CreateVideoUseCase(
+    $useCase = new UseCase\UpdateVideoUseCase(
         app(VideoRepositoryInterface::class),
         app(CategoryRepositoryInterface::class),
         app(CastMemberRepositoryInterface::class),
         app(GenreRepositoryInterface::class),
         app(DatabaseTransactionInterface::class),
-        new FileStorageStub,
+        app(FileStorageInterface::class),
         new VideoEventManagerStub,
     );
 
-    $response = $useCase->execute(new UseCase\DTO\CreateVideoInput(
+    $response = $useCase->execute(new UseCase\DTO\UpdateVideoInput(
+        id: $this->model->id,
         title: 'title',
         description: 'description',
-        yearLaunched: 2010,
-        duration: 50,
-        opened: true,
-        rating: 'L',
         categories: $categories ?? [],
         genres: $genres ?? [],
         castMembers: $castMembers ?? [],
@@ -65,9 +69,9 @@ test("criação de um vídeo com os relacionamentos", function ($data) {
     expect($response->id)->not->toBeNull();
     expect($response->title)->toBe('title');
     expect($response->description)->toBe('description');
-    expect($response->year_launched)->toBe(2010);
-    expect($response->duration)->toBe(50);
-    expect($response->rating)->toBe('L');
+    expect($response->year_launched)->toBe($this->model->year_launched);
+    expect($response->duration)->toBe($this->model->duration);
+    expect($response->rating)->toBe($this->model->rating);
     expect($response->categories)->toHaveCount(count($categories ?? []));
     expect($response->genres)->toHaveCount(count($genres ?? []));
     expect($response->cast_members)->toHaveCount(count($castMembers ?? []));

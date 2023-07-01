@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Genre as ModelGenre;
 use App\Repositories\Presenter\ItemPresenter;
+use App\Repositories\Presenter\KeyValuePresenter;
 use App\Repositories\Presenter\PaginationPresenter;
 use BRCas\CA\Domain\Abstracts\EntityAbstract;
 use BRCas\CA\Domain\Exceptions\EntityNotFoundException;

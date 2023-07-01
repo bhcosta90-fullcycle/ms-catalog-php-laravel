@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         $this->app->bind(DatabaseTransactionInterface::class, DatabaseTransaction::class);
-        $this->app->bind(FileStorageInterface::class, FileStorage::class);
+        $this->app->singleton(FileStorageInterface::class, FileStorage::class);
     }
 
     /**

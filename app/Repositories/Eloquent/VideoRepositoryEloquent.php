@@ -37,6 +37,7 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
         ]);
 
         $this->syncRelationships($model, $entity);
+        $this->syncImagesAndMedia($model, $entity);
 
         return $this->toEntity($model);
     }
@@ -95,6 +96,17 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
         $entity->categories()->sync($video->categories);
         $entity->genres()->sync($video->genres);
         $entity->castMember()->sync($video->castMembers);
+    }
+
+    protected function syncImagesAndMedia(ModelsVideo $entity, Video $video)
+    {
+        if ($data = $video->trailerFile()) {
+            $entity->trailer()->updateOrCreate([
+                'file_path' => $data->path,
+                'media_status' => $data->status->value,
+                'encoded_path' => $data->encoded,
+            ]);
+        }
     }
 
     protected function toEntity(ModelsVideo $model): Video

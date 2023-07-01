@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('path');
             $table->enum('type', array_keys(ImageTypes::cases()));
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -41,4 +41,34 @@ class Video extends Model
     {
         return $this->belongsToMany(CastMember::class);
     }
+
+    public function video()
+    {
+        return $this->hasOne(Media::class)
+            ->where('type', (string) MediaTypes::VIDEO->value);
+    }
+
+    public function trailer()
+    {
+        return $this->hasOne(Media::class)
+            ->where('type', (string) MediaTypes::TRAILER->value);
+    }
+
+    public function banner()
+    {
+        return $this->hasOne(ImageVideo::class)
+            ->where('type', (string) ImageTypes::BANNER->value);
+    }
+
+    public function thumb()
+    {
+        return $this->hasOne(ImageVideo::class)
+            ->where('type', (string) ImageTypes::THUMB->value);
+    }
+
+    public function half()
+    {
+        return $this->hasOne(ImageVideo::class)
+            ->where('type', (string) ImageTypes::THUMB_HALF->value);
+    }
 }

@@ -32,3 +32,13 @@ test('testando se o model tem os casts', function () {
         'deleted_at' => 'datetime',
     ]);
 });
+
+test("testando se existe a função para vincular", function ($action) {
+    expect(method_exists(new Model, $action))->toBeTrue();
+})->with([
+    'trailer',
+    'video',
+    'banner',
+    'thumb',
+    'half'
+]);

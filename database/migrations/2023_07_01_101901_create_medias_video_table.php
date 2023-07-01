@@ -22,6 +22,7 @@ return new class extends Migration
                     ->default(MediaStatus::PENDING->value);
             $table->enum('type', array_keys(MediaTypes::cases()));
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

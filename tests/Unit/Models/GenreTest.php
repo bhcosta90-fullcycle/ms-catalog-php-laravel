@@ -18,3 +18,8 @@ test('testando se o model tem os fillable', function () {
 test('testando se o model tem os casts', function () {
     ModelTestCase::make(new Model)->casts(['is_active' => 'boolean', 'deleted_at' => 'datetime']);
 });
+
+test("testando se existe a função para vincular o video", function () {
+    expect(method_exists(new Model, 'categories'))->toBeTrue();
+});
+

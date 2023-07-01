@@ -116,7 +116,7 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
 
     protected function toEntity(ModelsVideo $model): Video
     {
-        return new Video(
+        $domain = new Video(
             id: new Uuid($model->id),
             title: $model->title,
             description: $model->description,
@@ -128,23 +128,36 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
             categories: $model->categories->pluck('id')->toArray(),
             genres: $model->genres->pluck('id')->toArray(),
             castMembers: $model->castMember->pluck('id')->toArray(),
-            thumbHalf: $model->half ? new Image(image: $model->half->path) : null,
-            thumbFile: $model->thumb ? new Image(image: $model->thumb->path) : null,
-            bannerFile: $model->banner ? new Image(image: $model->banner->path) : null,
-            videoFile: $model->video
-                ? new Media(
-                    path: $model->video->file_path,
-                    status: MediaStatus::from($model->video->media_status),
-                    encoded: $model->encoded_path
-                )
-                : null,
-            trailerFile: $model->trailer
-                ? new Media(
-                    path: $model->trailer->file_path,
-                    status: MediaStatus::from($model->trailer->media_status),
-                    encoded: $model->encoded_path
-                )
-                : null,
         );
+
+        if ($data = $model->trailer) {
+            $domain->setTrailerFile(new Media(
+                path: $data->file_path,
+                status: MediaStatus::from($data->media_status),
+                encoded: $model->encoded_path
+            ));
+        }
+
+        if ($data = $model->video) {
+            $domain->setVideoFile(new Media(
+                path: $data->file_path,
+                status: MediaStatus::from($data->media_status),
+                encoded: $model->encoded_path
+            ));
+        }
+
+        if ($data = $model->banner) {
+            $domain->setBannerFile(new Image(image: $data->path));
+        }
+
+        if ($data = $model->thumb) {
+            $domain->setThumbFile(new Image(image: $data->path));
+        }
+
+        if ($data = $model->half) {
+            $domain->setThumbHalf(new Image(image: $data->path));
+        }
+
+        return $domain;
     }
 }

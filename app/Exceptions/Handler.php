@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use BRCas\CA\Domain\Exceptions\EntityValidationException;
+use BRCas\CA\Domain\Exceptions\ValidationNotificationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
 use Throwable;
@@ -34,14 +35,18 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         if ($e instanceof EntityNotFoundException) {
-            return $this->showError($e->getMessage(), Response::HTTP_NOT_FOUND);
+            $response = $this->showError($e->getMessage(), Response::HTTP_NOT_FOUND);
         }
 
         if ($e instanceof EntityValidationException) {
-            return $this->showError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = $this->showError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return parent::render($request, $e);
+        if ($e instanceof ValidationNotificationException) {
+            $response = $this->showError($e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        return $response ?? parent::render($request, $e);
     }
 
     private function showError(string $message, int $statusCode)

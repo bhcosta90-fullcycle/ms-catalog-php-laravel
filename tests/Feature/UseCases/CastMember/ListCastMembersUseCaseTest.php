@@ -7,7 +7,7 @@ use BRCas\MV\UseCases\CastMember as UseCase;
 test("testando a integração do caso de uso para listar o domínio quando estiver vazio", function () {
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\ListCastMembersUseCase(repository: $repository);
-    $response = $useCase->execute(new UseCase\DTO\ListCastMembers\Input());
+    $response = $useCase->execute();
 
     expect($response->total)->toBe(0);
     expect($response->items)->toHaveCount(0);
@@ -23,7 +23,7 @@ test("testando a integração do caso de uso para listar o domínio quando não 
     Model::factory(20)->create();
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\ListCastMembersUseCase(repository: $repository);
-    $response = $useCase->execute(new UseCase\DTO\ListCastMembers\Input());
+    $response = $useCase->execute();
 
     expect($response->total)->toBe(20);
     expect($response->items)->toHaveCount(15);

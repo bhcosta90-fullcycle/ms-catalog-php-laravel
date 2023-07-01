@@ -6,6 +6,7 @@ use App\Models\Category as ModelCategory;
 use App\Repositories\Presenter\ItemPresenter;
 use App\Repositories\Presenter\KeyValuePresenter;
 use App\Repositories\Presenter\PaginationPresenter;
+use BRCas\CA\Domain\Abstracts\EntityAbstract;
 use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use BRCas\CA\Repository\ItemInterface;
 use BRCas\CA\Repository\KeyValueInterface;
@@ -21,7 +22,10 @@ class CategoryRepositoryEloquent implements CategoryRepositoryInterface
         //
     }
 
-    public function insert(Category $category): Category
+    /**
+     * @param Category $category
+     */
+    public function insert(EntityAbstract $category): Category
     {
         $model = $this->model->create([
             'id' => $category->id(),
@@ -50,7 +54,10 @@ class CategoryRepositoryEloquent implements CategoryRepositoryInterface
         return $this->toEntity($model);
     }
 
-    public function update(Category $category): Category
+    /**
+     * @param Category $category
+     */
+    public function update(EntityAbstract $category): Category
     {
         $model = $this->findByModel($category->id);
         $model->update([
@@ -62,7 +69,10 @@ class CategoryRepositoryEloquent implements CategoryRepositoryInterface
         return $this->toEntity($model);
     }
 
-    public function delete(Category $category): bool
+    /**
+     * @param Category $category
+     */
+    public function delete(EntityAbstract $category): bool
     {
         $model = $this->findByModel($category->id);
         return $model->delete();

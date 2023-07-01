@@ -5,9 +5,11 @@ namespace App\Repositories\Eloquent;
 use App\Models\Genre as ModelGenre;
 use App\Repositories\Presenter\ItemPresenter;
 use App\Repositories\Presenter\PaginationPresenter;
+use BRCas\CA\Domain\Abstracts\EntityAbstract;
 use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use BRCas\CA\Domain\ValueObject\Uuid;
 use BRCas\CA\Repository\ItemInterface;
+use BRCas\CA\Repository\KeyValueInterface;
 use BRCas\CA\Repository\PaginateInterface;
 use BRCas\MV\Domain\Entity\Genre;
 use BRCas\MV\Domain\Repository\GenreRepositoryInterface;
@@ -20,7 +22,10 @@ class GenreRepositoryEloquent implements GenreRepositoryInterface
         //
     }
 
-    public function insert(Genre $genre): Genre
+    /**
+     * @param Genre $genre
+     */
+    public function insert(EntityAbstract $genre): Genre
     {
         $model = $this->model->create([
             'id' => $genre->id(),
@@ -50,7 +55,10 @@ class GenreRepositoryEloquent implements GenreRepositoryInterface
         return $this->toEntity($model);
     }
 
-    public function update(Genre $genre): Genre
+    /**
+     * @param Genre $genre
+     */
+    public function update(EntityAbstract $genre): Genre
     {
         $model = $this->findByModel($genre->id);
         $model->update([
@@ -62,10 +70,18 @@ class GenreRepositoryEloquent implements GenreRepositoryInterface
         return $this->toEntity($model);
     }
 
-    public function delete(Genre $genre): bool
+    /**
+     * @param Genre $genre
+     */
+    public function delete(EntityAbstract $genre): bool
     {
         $model = $this->findByModel($genre->id);
         return $model->delete();
+    }
+
+    public function getIdsByListId(array $categories = []): KeyValueInterface
+    {
+        return new KeyValuePresenter($this->model->whereIn('id', $categories), 'id', 'name');
     }
 
     protected function findByModel(string $id): Model {

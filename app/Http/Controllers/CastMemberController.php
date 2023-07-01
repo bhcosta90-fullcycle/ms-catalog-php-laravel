@@ -11,7 +11,7 @@ class CastMemberController extends Controller
 {
     public function index(UseCase\ListCastMembersUseCase $createCastMemberUseCase)
     {
-        $response = $createCastMemberUseCase->execute(new UseCase\DTO\ListCastMembers\Input());
+        $response = $createCastMemberUseCase->execute();
         return CastMemberResource::collection(collect($response->items))
             ->additional([
                 'meta' => [

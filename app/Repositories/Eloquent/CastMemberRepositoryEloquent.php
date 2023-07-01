@@ -6,6 +6,7 @@ use App\Models\CastMember as ModelCastMember;
 use App\Repositories\Presenter\ItemPresenter;
 use App\Repositories\Presenter\KeyValuePresenter;
 use App\Repositories\Presenter\PaginationPresenter;
+use BRCas\CA\Domain\Abstracts\EntityAbstract;
 use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use BRCas\CA\Domain\ValueObject\Uuid;
 use BRCas\CA\Repository\ItemInterface;
@@ -23,7 +24,10 @@ class CastMemberRepositoryEloquent implements CastMemberRepositoryInterface
         //
     }
 
-    public function insert(CastMember $category): CastMember
+    /**
+     * @param CastMember $category
+     */
+    public function insert(EntityAbstract $category): CastMember
     {
         $model = $this->model->create([
             'id' => $category->id(),
@@ -52,7 +56,10 @@ class CastMemberRepositoryEloquent implements CastMemberRepositoryInterface
         return $this->toEntity($model);
     }
 
-    public function update(CastMember $category): CastMember
+    /**
+     * @param CastMember $category
+     */
+    public function update(EntityAbstract $category): CastMember
     {
         $model = $this->findByModel($category->id);
         $model->update([
@@ -64,7 +71,10 @@ class CastMemberRepositoryEloquent implements CastMemberRepositoryInterface
         return $this->toEntity($model);
     }
 
-    public function delete(CastMember $category): bool
+    /**
+     * @param CastMember $category
+     */
+    public function delete(EntityAbstract $category): bool
     {
         $model = $this->findByModel($category->id);
         return $model->delete();

@@ -11,7 +11,7 @@ class GenreController extends Controller
 {
     public function index(UseCase\ListGenresUseCase $createGenreUseCase)
     {
-        $response = $createGenreUseCase->execute(new UseCase\DTO\ListGenres\Input());
+        $response = $createGenreUseCase->execute();
         return GenreResource::collection(collect($response->items))
             ->additional([
                 'meta' => [

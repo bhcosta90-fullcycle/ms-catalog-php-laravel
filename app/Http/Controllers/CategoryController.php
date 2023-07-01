@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function index(UseCase\ListCategoriesUseCase $createCategoryUseCase)
     {
-        $response = $createCategoryUseCase->execute(new UseCase\DTO\ListCategories\Input());
+        $response = $createCategoryUseCase->execute();
         return CategoryResource::collection(collect($response->items))
             ->additional([
                 'meta' => [

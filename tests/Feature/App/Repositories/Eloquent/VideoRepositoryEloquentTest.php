@@ -5,6 +5,7 @@ use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Video as Model;
 use App\Repositories\Eloquent\VideoRepositoryEloquent as RepositoryEloquent;
+use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use BRCas\CA\Repository\ItemInterface;
 use BRCas\CA\Repository\PaginateInterface;
 use BRCas\MV\Domain\Repository\VideoRepositoryInterface as RepositoryInterface;

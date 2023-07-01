@@ -13,16 +13,16 @@ class VideoController extends Controller
     public function index(UseCase\ListVideosUseCase $listVideosUseCase)
     {
         $response = $listVideosUseCase->execute();
-        return VideoResource::collection(collect($response->items))
+        return VideoResource::collection(collect($response->items()))
             ->additional([
                 'meta' => [
-                    'total' => $response->total,
-                    'last_page' => $response->last_page,
-                    'first_page' => $response->first_page,
-                    'current_page' => $response->current_page,
-                    'per_page' => $response->per_page,
-                    'to' => $response->to,
-                    'from' => $response->from,
+                    'total' => $response->total(),
+                    'last_page' => $response->lastPage(),
+                    'first_page' => $response->firstPage(),
+                    'current_page' => $response->currentPage(),
+                    'per_page' => $response->perPage(),
+                    'to' => $response->to(),
+                    'from' => $response->from(),
                 ]
             ]);
     }

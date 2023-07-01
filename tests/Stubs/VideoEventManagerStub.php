@@ -9,6 +9,8 @@ class VideoEventManagerStub implements VideoEventManagerInterface
 {
     public function dispatch(EventInterface $event): void
     {
+        event(self::class);
+
         $data = json_encode((array) $event->payload());
         \Log::info("Event: {$event->name()}: {$data}");
     }

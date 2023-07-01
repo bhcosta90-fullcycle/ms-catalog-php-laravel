@@ -5,7 +5,6 @@ use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Video;
 use BRCas\CA\UseCase\DatabaseTransactionInterface;
-use BRCas\CA\UseCase\FileStorageInterface;
 use BRCas\MV\Domain\Repository\{
     CastMemberRepositoryInterface,
     CategoryRepositoryInterface,
@@ -13,12 +12,12 @@ use BRCas\MV\Domain\Repository\{
     VideoRepositoryInterface
 };
 use BRCas\MV\UseCases\Video as UseCase;
+use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
+use Tests\Stubs\FileStorageStub;
 use Tests\Stubs\VideoEventManagerStub;
 
 beforeEach(function(){
-    Storage::fake();
     $this->model = Video::factory()->create();
 });
 
@@ -48,7 +47,7 @@ test("criação de um vídeo com os relacionamentos", function ($data) {
         app(CastMemberRepositoryInterface::class),
         app(GenreRepositoryInterface::class),
         app(DatabaseTransactionInterface::class),
-        app(FileStorageInterface::class),
+        new FileStorageStub,
         new VideoEventManagerStub,
     );
 
@@ -128,3 +127,103 @@ test("criação de um vídeo com os relacionamentos", function ($data) {
         'half-file' => true,
     ],
 ]);
+
+test("exception -> testando caso a transação da inserção na base de dados falhar", function () {
+    Event::listen(TransactionBeginning::class, fn () => throw new Exception('begin transaction fail'));
+
+    $useCase = new UseCase\CreateVideoUseCase(
+        app(VideoRepositoryInterface::class),
+        app(CategoryRepositoryInterface::class),
+        app(CastMemberRepositoryInterface::class),
+        app(GenreRepositoryInterface::class),
+        app(DatabaseTransactionInterface::class),
+        new FileStorageStub,
+        new VideoEventManagerStub,
+    );
+
+    try {
+        $useCase->execute(new UseCase\DTO\UpdateVideoInput(
+            id: $this->video->id,
+            title: 'title',
+            description: 'description',
+            categories: [],
+            genres: [],
+            castMembers: [],
+        ));
+        expect(false)->toBeTrue();
+    } catch (Throwable) {
+        $this->assertDatabaseCount('videos', 0);
+    }
+})->throws(\Exception::class);
+
+test("exception -> testando o upload de arquivo", function () {
+    Event::listen(FileStorageStub::class, fn () => throw new Exception('upload file'));
+
+    $useCase = new UseCase\CreateVideoUseCase(
+        app(VideoRepositoryInterface::class),
+        app(CategoryRepositoryInterface::class),
+        app(CastMemberRepositoryInterface::class),
+        app(GenreRepositoryInterface::class),
+        app(DatabaseTransactionInterface::class),
+        new FileStorageStub,
+        new VideoEventManagerStub,
+    );
+
+    try {
+        $fakeFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
+        $file = converteUploadFile($fakeFile);
+
+        $useCase->execute(new UseCase\DTO\UpdateVideoInput(
+            id: $this->video->id,
+            title: 'title',
+            description: 'description',
+            categories: [],
+            genres: [],
+            castMembers: [],
+            videoFile: $file,
+        ));
+        expect(false)->toBeTrue();
+    } catch (Throwable) {
+        $this->assertDatabaseHas('videos', [
+            'id' => $this->model->id,
+            'title' => $this->model->title,
+            'description' => $this->model->description,
+        ]);
+    }
+});
+
+test("exception -> testando o disparo de evento", function () {
+    Event::listen(VideoEventManagerStub::class, fn () => throw new Exception('event manager fail'));
+
+    $useCase = new UseCase\CreateVideoUseCase(
+        app(VideoRepositoryInterface::class),
+        app(CategoryRepositoryInterface::class),
+        app(CastMemberRepositoryInterface::class),
+        app(GenreRepositoryInterface::class),
+        app(DatabaseTransactionInterface::class),
+        new FileStorageStub,
+        new VideoEventManagerStub,
+    );
+
+    try {
+        $fakeFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
+        $file = converteUploadFile($fakeFile);
+
+        $useCase->execute(new UseCase\DTO\UpdateVideoInput(
+            id: $this->video->id,
+            title: 'title',
+            description: 'description',
+            categories: [],
+            genres: [],
+            castMembers: [],
+            videoFile: $file,
+        ));
+        expect(false)->toBeTrue();
+    } catch (Throwable) {
+        $this->assertDatabaseHas('videos', [
+            'id' => $this->model->id,
+            'title' => $this->model->title,
+            'description' => $this->model->description,
+        ]);
+    }
+});

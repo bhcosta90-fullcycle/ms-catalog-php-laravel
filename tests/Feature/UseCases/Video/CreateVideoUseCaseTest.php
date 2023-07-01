@@ -11,7 +11,9 @@ use BRCas\MV\Domain\Repository\{
     VideoRepositoryInterface
 };
 use BRCas\MV\UseCases\Video as UseCase;
+use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Event;
 use Tests\Stubs\FileStorageStub;
 use Tests\Stubs\VideoEventManagerStub;
 
@@ -106,14 +108,14 @@ test("criação de um vídeo com os relacionamentos", function ($data) {
     "with-half-file" => fn () => [
         'half-file' => true,
     ],
-    "with-all-medias" => fn() => [
+    "with-all-medias" => fn () => [
         'video-file' => true,
         'trailer-file' => true,
         'banner-file' => true,
         'thumb-file' => true,
         'half-file' => true,
     ],
-    "with-all-data" => fn() => [
+    "with-all-data" => fn () => [
         'categories' => 4,
         'cast-members' => 3,
         'genres' => 2,
@@ -124,3 +126,104 @@ test("criação de um vídeo com os relacionamentos", function ($data) {
         'half-file' => true,
     ],
 ]);
+
+test("exception -> testando caso a transação da inserção na base de dados falhar", function () {
+    Event::listen(TransactionBeginning::class, fn () => throw new Exception('begin transaction fail'));
+
+    $useCase = new UseCase\CreateVideoUseCase(
+        app(VideoRepositoryInterface::class),
+        app(CategoryRepositoryInterface::class),
+        app(CastMemberRepositoryInterface::class),
+        app(GenreRepositoryInterface::class),
+        app(DatabaseTransactionInterface::class),
+        new FileStorageStub,
+        new VideoEventManagerStub,
+    );
+
+    try {
+        $useCase->execute(new UseCase\DTO\CreateVideoInput(
+            title: 'title',
+            description: 'description',
+            yearLaunched: 2010,
+            duration: 50,
+            opened: true,
+            rating: 'L',
+            categories: [],
+            genres: [],
+            castMembers: [],
+        ));
+        expect(false)->toBeTrue();
+    } catch (Throwable) {
+        $this->assertDatabaseCount('videos', 0);
+    }
+})->throws(\Exception::class);
+
+test("exception -> testando o upload de arquivo", function () {
+    Event::listen(FileStorageStub::class, fn () => throw new Exception('upload file'));
+
+    $useCase = new UseCase\CreateVideoUseCase(
+        app(VideoRepositoryInterface::class),
+        app(CategoryRepositoryInterface::class),
+        app(CastMemberRepositoryInterface::class),
+        app(GenreRepositoryInterface::class),
+        app(DatabaseTransactionInterface::class),
+        new FileStorageStub,
+        new VideoEventManagerStub,
+    );
+
+    try {
+        $fakeFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
+        $file = converteUploadFile($fakeFile);
+
+        $useCase->execute(new UseCase\DTO\CreateVideoInput(
+            title: 'title',
+            description: 'description',
+            yearLaunched: 2010,
+            duration: 50,
+            opened: true,
+            rating: 'L',
+            categories: [],
+            genres: [],
+            castMembers: [],
+            videoFile: $file,
+        ));
+        expect(false)->toBeTrue();
+    } catch (Throwable) {
+        $this->assertDatabaseCount('videos', 0);
+    }
+});
+
+test("exception -> testando o disparo de evento", function () {
+    Event::listen(VideoEventManagerStub::class, fn () => throw new Exception('event manager fail'));
+
+    $useCase = new UseCase\CreateVideoUseCase(
+        app(VideoRepositoryInterface::class),
+        app(CategoryRepositoryInterface::class),
+        app(CastMemberRepositoryInterface::class),
+        app(GenreRepositoryInterface::class),
+        app(DatabaseTransactionInterface::class),
+        new FileStorageStub,
+        new VideoEventManagerStub,
+    );
+
+    try {
+        $fakeFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
+        $file = converteUploadFile($fakeFile);
+
+        $useCase->execute(new UseCase\DTO\CreateVideoInput(
+            title: 'title',
+            description: 'description',
+            yearLaunched: 2010,
+            duration: 50,
+            opened: true,
+            rating: 'L',
+            categories: [],
+            genres: [],
+            castMembers: [],
+            videoFile: $file,
+        ));
+        expect(false)->toBeTrue();
+    } catch (Throwable) {
+        $this->assertDatabaseCount('videos', 0);
+    }
+});

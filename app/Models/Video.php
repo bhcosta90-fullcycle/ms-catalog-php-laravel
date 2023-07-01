@@ -24,7 +24,21 @@ class Video extends Model
         'is_active' => 'boolean',
         'year_launched' => 'integer',
         'opened' => 'boolean',
-        'rating' => 'integer',
         'duration' => 'integer',
     ];
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class);
+    }
+
+    public function castMember()
+    {
+        return $this->belongsToMany(CastMember::class);
+    }
 }

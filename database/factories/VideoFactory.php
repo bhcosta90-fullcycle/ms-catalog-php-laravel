@@ -21,7 +21,7 @@ class VideoFactory extends Factory
             'id' => str()->uuid(),
             'title' => $this->faker->name(),
             'description' => $this->faker->sentence(10),
-            'year_launched' => now->parse(now()->addYears(5))->format('Y'),
+            'year_launched' => now()->parse(now()->addYears(5))->format('Y'),
             'opened' => true,
             'rating' => Rating::L->value,
             'duration' => 1,

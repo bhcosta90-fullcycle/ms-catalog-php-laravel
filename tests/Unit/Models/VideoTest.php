@@ -28,7 +28,6 @@ test('testando se o model tem os casts', function () {
         'is_active' => 'boolean',
         'year_launched' => 'integer',
         'opened' => 'boolean',
-        'rating' => 'integer',
         'duration' => 'integer',
         'deleted_at' => 'datetime',
     ]);

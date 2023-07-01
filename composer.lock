@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php.git",
-                "reference": "1ca8bc30213ba31f72b802b56251c5c25d38edc1"
+                "reference": "ff792abbbf745fedda431cfc97f52ec13dc79adf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bhcosta90-fullcycle/package-ms-catalog-php/zipball/1ca8bc30213ba31f72b802b56251c5c25d38edc1",
-                "reference": "1ca8bc30213ba31f72b802b56251c5c25d38edc1",
+                "url": "https://api.github.com/repos/bhcosta90-fullcycle/package-ms-catalog-php/zipball/ff792abbbf745fedda431cfc97f52ec13dc79adf",
+                "reference": "ff792abbbf745fedda431cfc97f52ec13dc79adf",
                 "shasum": ""
             },
             "require": {
@@ -59,7 +59,7 @@
                 "source": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php/tree/master",
                 "issues": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php/issues"
             },
-            "time": "2023-07-01T12:46:15+00:00"
+            "time": "2023-07-01T13:03:58+00:00"
         },
         {
             "name": "brick/math",

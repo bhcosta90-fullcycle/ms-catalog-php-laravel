@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\Storage\FileStorage;
 use App\Transactions\DatabaseTransaction;
 use BRCas\CA\UseCase\DatabaseTransactionInterface;
+use BRCas\CA\UseCase\FileStorageInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         $this->app->bind(DatabaseTransactionInterface::class, DatabaseTransaction::class);
+        $this->app->bind(FileStorageInterface::class, FileStorage::class);
     }
 
     /**

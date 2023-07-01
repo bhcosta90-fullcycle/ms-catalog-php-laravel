@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\VideoStoreRequest;
-use App\Http\Requests\VideoUpdateRequest;
+use App\Http\Requests\Video\{StoreRequest, UpdateRequest};
 use App\Http\Resources\VideoResource;
 use BRCas\MV\UseCases\Video as UseCase;
 use Illuminate\Http\Response;
@@ -34,7 +33,7 @@ class VideoController extends Controller
         return new VideoResource($response);
     }
 
-    public function store(UseCase\CreateVideoUseCase $createVideoUseCase, VideoStoreRequest $request)
+    public function store(UseCase\CreateVideoUseCase $createVideoUseCase, StoreRequest $request)
     {
         $response = $createVideoUseCase->execute(new UseCase\DTO\CreateVideoInput(
             title: $request->title,
@@ -55,7 +54,7 @@ class VideoController extends Controller
         return (new VideoResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function update(UseCase\UpdateVideoUseCase $updateVideoUseCase, string $id, VideoUpdateRequest $request)
+    public function update(UseCase\UpdateVideoUseCase $updateVideoUseCase, string $id, UpdateRequest $request)
     {
         $response = $updateVideoUseCase->execute(new UseCase\DTO\UpdateVideoInput(
             id: $id,

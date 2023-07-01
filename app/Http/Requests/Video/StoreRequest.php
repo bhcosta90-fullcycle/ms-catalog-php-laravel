@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Video;
 
 use BRCas\MV\Domain\Enum\Rating;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class VideoUpdateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,6 +26,10 @@ class VideoUpdateRequest extends FormRequest
         return [
             'title' => ['required', 'min: 3', 'max: 255'],
             'description' => ['required', 'min: 3', 'max: 255'],
+            'year_launched' => 'required|date_format:Y',
+            'opened' => 'required|boolean',
+            'rating' => ['required', new Enum(Rating::class)],
+            'duration' => 'required|integer',
             'categories' => 'required|array|exists:categories,id,deleted_at,NULL',
             'genres' => ['required', 'array', 'exists:genres,id,deleted_at,NULL'],
             'cast_members' => 'required|array|exists:cast_members,id,deleted_at,NULL',

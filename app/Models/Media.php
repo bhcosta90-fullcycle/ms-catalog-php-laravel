@@ -26,14 +26,8 @@ class Media extends Model
         'type' => 'integer',
     ];
 
-    public function video()
+    private function video()
     {
         return $this->belongsTo(Video::class);
-    }
-
-    public function trailer()
-    {
-        return $this->hasOne(Media::class)
-            ->where('type', (string) MediaTypes::TRAILER->value);
     }
 }

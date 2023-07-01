@@ -22,7 +22,7 @@ class Image extends Model
         'type' => 'integer'
     ];
 
-    public function video()
+    private function video()
     {
         return $this->belongsTo(Video::class);
     }

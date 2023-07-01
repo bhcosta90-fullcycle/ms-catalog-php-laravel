@@ -15,9 +15,6 @@ return new class extends Migration
         Schema::create('images_video', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('video_id')->on('videos');
-            $table->timestamps();
-            $table->softDeletes();
-
             $table->string('path');
             $table->enum('type', array_keys(ImageTypes::cases()));
             $table->timestamps();

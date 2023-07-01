@@ -21,6 +21,8 @@ use DateTime;
 
 class VideoRepositoryEloquent implements VideoRepositoryInterface
 {
+    use Traits\MediaTrait, Traits\ImageTrait;
+
     public function __construct(protected ModelsVideo $model)
     {
         //
@@ -105,54 +107,11 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
 
     protected function syncImagesAndMedia(ModelsVideo $entity, Video $video)
     {
-        if ($data = $video->trailerFile()) {
-            $entity->trailer()->updateOrCreate([
-                'file_path' => $data->path,
-                'media_status' => $data->status->value,
-                'encoded_path' => $data->encoded,
-                'type' => MediaTypes::TRAILER,
-            ], [
-                'video_id' => $video->id(),
-            ]);
-        }
-
-        if ($data = $video->videoFile()) {
-            $entity->trailer()->updateOrCreate([
-                'file_path' => $data->path,
-                'media_status' => $data->status->value,
-                'encoded_path' => $data->encoded,
-                'type' => MediaTypes::VIDEO,
-            ], [
-                'video_id' => $video->id(),
-            ]);
-        }
-
-        if ($data = $video->bannerFile()) {
-            $entity->banner()->updateOrCreate([
-                'path' => $data->path(),
-                'type' => ImageTypes::BANNER,
-            ], [
-                'video_id' => $video->id(),
-            ]);
-        }
-
-        if ($data = $video->thumbFile()) {
-            $entity->thumb()->updateOrCreate([
-                'path' => $data->path(),
-                'type' => ImageTypes::THUMB,
-            ], [
-                'video_id' => $video->id(),
-            ]);
-        }
-
-        if ($data = $video->thumbHalf()) {
-            $entity->half()->updateOrCreate([
-                'path' => $data->path(),
-                'type' => ImageTypes::THUMB_HALF,
-            ], [
-                'video_id' => $video->id(),
-            ]);
-        }
+        $this->updateMediaTrailer($video, $entity);
+        $this->updateMediaVideo($video, $entity);
+        $this->updateImageBanner($video, $entity);
+        $this->updateImageThumb($video, $entity);
+        $this->updateImageHalf($video, $entity);
     }
 
     protected function toEntity(ModelsVideo $model): Video

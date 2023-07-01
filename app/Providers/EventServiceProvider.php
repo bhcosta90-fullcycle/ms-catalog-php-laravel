@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendVideoToMicroEncoderListener;
+use BRCas\MV\Domain\Event\VideoCreateEvent;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+
+        VideoCreateEvent::class => [
+            SendVideoToMicroEncoderListener::class,
         ],
     ];
 

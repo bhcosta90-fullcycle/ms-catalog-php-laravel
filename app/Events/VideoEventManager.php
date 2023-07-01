@@ -9,6 +9,6 @@ class VideoEventManager implements VideoEventManagerInterface
 {
     public function dispatch(EventInterface $event): void
     {
-        //
+        event($event);
     }
 }

@@ -12,10 +12,10 @@ trait ImageTrait
     {
         if ($data = $video->bannerFile()) {
             $model->banner()->updateOrCreate([
+                'video_id' => $video->id(),
+            ], [
                 'path' => $data->path(),
                 'type' => (string) ImageTypes::BANNER->value,
-            ], [
-                'video_id' => $video->id(),
             ]);
         }
     }
@@ -24,10 +24,10 @@ trait ImageTrait
     {
         if ($data = $video->thumbFile()) {
             $model->thumb()->updateOrCreate([
+                'video_id' => $video->id(),
+            ], [
                 'path' => $data->path(),
                 'type' => (string) ImageTypes::THUMB->value,
-            ], [
-                'video_id' => $video->id(),
             ]);
         }
     }
@@ -36,10 +36,10 @@ trait ImageTrait
     {
         if ($data = $video->thumbHalf()) {
             $model->half()->updateOrCreate([
+                'video_id' => $video->id(),
+            ], [
                 'path' => $data->path(),
                 'type' => (string) ImageTypes::THUMB_HALF->value,
-            ], [
-                'video_id' => $video->id(),
             ]);
         }
     }

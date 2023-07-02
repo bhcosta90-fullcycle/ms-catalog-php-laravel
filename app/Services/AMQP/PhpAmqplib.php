@@ -2,6 +2,7 @@
 
 namespace App\Services\AMQP;
 
+use Closure;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Exchange\AMQPExchangeType;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -32,6 +33,16 @@ class PhpAmqplib implements AMQPInterface
 
     public function producer(string $queue, array $payload, string $exchange): void
     {
+        $this->channel->queue_declare($queue, false, true, false, false);
+        $this->channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, true, false);
+        $this->channel->queue_bind($queue, $exchange);
+
+        $message = new AMQPMessage(json_encode($payload), [
+            'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT
+        ]);
+        $this->channel->basic_publish($message, $exchange);
+        $this->closeChannel();
+        $this->closeConnection();
     }
 
     public function producerFanout(array $payload, string $exchange)
@@ -57,8 +68,34 @@ class PhpAmqplib implements AMQPInterface
         $this->closeConnection();
     }
 
-    public function consumer(string $queue, string $exchange, Clojure $callback): void
+    public function consumer(string $queue, string $exchange, Closure $callback): void
     {
+        $this->channel->exchange_declare(
+            exchange: $exchange,
+            type: AMQPExchangeType::DIRECT,
+            passive: false,
+            durable: true,
+            auto_delete: false,
+        );
+
+        $this->channel->queue_bind(
+            queue: $queue,
+            exchange: $exchange,
+            routing_key: config('ms.queue_name')
+        );
+
+        $this->channel->basic_consume(
+            queue: $queue,
+            callback: $callback,
+        );
+
+        while ($this->channel->is_consuming()) {
+            $this->channel->wait();
+        }
+
+        $this->closeChannel();
+        $this->closeConnection();
+
     }
 
     protected function closeChannel() {

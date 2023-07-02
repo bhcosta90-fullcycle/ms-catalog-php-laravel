@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a71ffc7c5f48057fa226611b15b1c790",
+    "content-hash": "6af570e7b6b3f5d59e1b59981e4dc1f1",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -161,12 +161,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php.git",
-                "reference": "39d0067d82cd870b9b75c0957739c942c3829a6c"
+                "reference": "7d403b757726d44e281f76f8160017a0139d3f95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bhcosta90-fullcycle/package-ms-catalog-php/zipball/39d0067d82cd870b9b75c0957739c942c3829a6c",
-                "reference": "39d0067d82cd870b9b75c0957739c942c3829a6c",
+                "url": "https://api.github.com/repos/bhcosta90-fullcycle/package-ms-catalog-php/zipball/7d403b757726d44e281f76f8160017a0139d3f95",
+                "reference": "7d403b757726d44e281f76f8160017a0139d3f95",
                 "shasum": ""
             },
             "require": {
@@ -208,7 +208,7 @@
                 "source": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php/tree/master",
                 "issues": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php/issues"
             },
-            "time": "2023-07-02T15:54:32+00:00"
+            "time": "2023-07-02T23:30:06+00:00"
         },
         {
             "name": "brick/math",

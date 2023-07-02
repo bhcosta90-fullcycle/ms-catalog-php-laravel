@@ -13,7 +13,7 @@ trait ImageTrait
         if ($data = $video->bannerFile()) {
             $model->banner()->updateOrCreate([
                 'path' => $data->path(),
-                'type' => ImageTypes::BANNER,
+                'type' => (string) ImageTypes::BANNER->value,
             ], [
                 'video_id' => $video->id(),
             ]);
@@ -25,7 +25,7 @@ trait ImageTrait
         if ($data = $video->thumbFile()) {
             $model->thumb()->updateOrCreate([
                 'path' => $data->path(),
-                'type' => ImageTypes::THUMB,
+                'type' => (string) ImageTypes::THUMB->value,
             ], [
                 'video_id' => $video->id(),
             ]);
@@ -37,7 +37,7 @@ trait ImageTrait
         if ($data = $video->thumbHalf()) {
             $model->half()->updateOrCreate([
                 'path' => $data->path(),
-                'type' => ImageTypes::THUMB_HALF,
+                'type' => (string) ImageTypes::THUMB_HALF->value,
             ], [
                 'video_id' => $video->id(),
             ]);

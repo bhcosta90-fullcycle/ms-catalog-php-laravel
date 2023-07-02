@@ -17,8 +17,6 @@ use BRCas\MV\Domain\Entity\Video;
 use BRCas\MV\Domain\Enum\MediaStatus;
 use BRCas\MV\Domain\Enum\Rating;
 use BRCas\MV\Domain\Repository\VideoRepositoryInterface;
-use BRCas\MV\Domain\ValueObject\Image;
-use BRCas\MV\Domain\ValueObject\Media;
 use DateTime;
 
 class VideoRepositoryEloquent implements VideoRepositoryInterface

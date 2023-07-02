@@ -15,7 +15,7 @@ trait MediaTrait
                 'file_path' => $data->path,
                 'media_status' => $data->status->value,
                 'encoded_path' => $data->encoded,
-                'type' => MediaTypes::TRAILER,
+                'type' => (string) MediaTypes::TRAILER->value,
             ], [
                 'video_id' => $video->id(),
             ]);
@@ -28,7 +28,7 @@ trait MediaTrait
                 'file_path' => $data->path,
                 'media_status' => $data->status->value,
                 'encoded_path' => $data->encoded,
-                'type' => MediaTypes::VIDEO,
+                'type' => (string) MediaTypes::VIDEO->value,
             ], [
                 'video_id' => $video->id(),
             ]);

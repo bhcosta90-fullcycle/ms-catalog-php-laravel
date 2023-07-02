@@ -45,12 +45,13 @@ test("I'm trying update a video without a media file", function () {
 test("I'm trying update a video with a media file", function () {
     $this->entity->setVideoFile(new Media(path: 'test', status: MediaStatus::PENDING));
     $this->repository->updateMedia($this->entity);
+    $this->assertDatabaseCount('medias_video', 1);
 
     $useCase = new UpdatePathMediaUseCase(
         repository: $this->repository,
     );
 
-    $response = $useCase->execute(new UpdatePathMediaInput(
+    $useCase->execute(new UpdatePathMediaInput(
         id: $this->id,
         path: 'testing',
         type: 'video'
@@ -62,6 +63,7 @@ test("I'm trying update a video with a media file", function () {
         'media_status' => 1,
         'encoded_path' => 'testing',
     ]);
+    $this->assertDatabaseCount('medias_video', 1);
 });
 
 test("I'm trying update a trailer without a media file", function () {
@@ -100,6 +102,8 @@ test("I'm trying update a trailer with a media file", function () {
         'media_status' => 1,
         'encoded_path' => 'testing',
     ]);
+
+    $this->assertDatabaseCount('medias_video', 1);
 });
 
 test("exception -> not found video", function () {

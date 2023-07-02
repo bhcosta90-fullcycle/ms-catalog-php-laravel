@@ -8,13 +8,12 @@ use BRCas\MV\Domain\Entity\Video;
 
 trait ImageTrait
 {
-    protected function updateImageBanner(Video $video, ModelsVideo $model)
+    protected function updateImageBanner(Video $entity, ModelsVideo $model)
     {
-        if ($data = $video->bannerFile()) {
-            $model->banner()->updateOrCreate([
-                'video_id' => $video->id(),
-            ], [
-                'path' => $data->path(),
+        if ($banner = $entity->bannerFile()) {
+            $action = $model->banner()->first() ? 'update' : 'create';
+            $model->banner()->{$action}([
+                'path' => $banner->path(),
                 'type' => (string) ImageTypes::BANNER->value,
             ]);
         }
@@ -22,11 +21,10 @@ trait ImageTrait
 
     protected function updateImageThumb(Video $video, ModelsVideo $model)
     {
-        if ($data = $video->thumbFile()) {
-            $model->thumb()->updateOrCreate([
-                'video_id' => $video->id(),
-            ], [
-                'path' => $data->path(),
+        if ($thumb = $video->thumbFile()) {
+            $action = $model->thumb()->first() ? 'update' : 'create';
+            $model->thumb()->{$action}([
+                'path' => $thumb->path(),
                 'type' => (string) ImageTypes::THUMB->value,
             ]);
         }
@@ -34,11 +32,10 @@ trait ImageTrait
 
     protected function updateImageHalf(Video $video, ModelsVideo $model)
     {
-        if ($data = $video->thumbHalf()) {
-            $model->half()->updateOrCreate([
-                'video_id' => $video->id(),
-            ], [
-                'path' => $data->path(),
+        if ($thumbHalf = $video->thumbHalf()) {
+            $action = $model->thumbHalf()->first() ? 'update' : 'create';
+            $model->thumbHalf()->{$action}([
+                'path' => $thumbHalf->path(),
                 'type' => (string) ImageTypes::THUMB_HALF->value,
             ]);
         }

@@ -157,7 +157,7 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
             $builder->addMediaTrailer(
                 path: $data->file_path,
                 status: MediaStatus::from($data->media_status),
-                encoded: $model->encoded_path,
+                encoded: $data->encoded_path,
             );
         }
 
@@ -165,7 +165,7 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
             $builder->addMediaVideo(
                 path: $data->file_path,
                 status: MediaStatus::from($data->media_status),
-                encoded: $model->encoded_path,
+                encoded: $data->encoded_path,
             );
         }
 

@@ -35,7 +35,7 @@ class RabbitMQCommand extends Command
      */
     public function handle()
     {
-        $callback = function($message){
+        $callback = function ($message) {
             $body = json_decode($message->body);
 
             if (empty($body->error)) {
@@ -44,7 +44,7 @@ class RabbitMQCommand extends Command
                 $this->updatePathMediaUseCase->execute(new UpdatePathMediaInput(
                     id: $data->id,
                     type: $data->type,
-                    path: $data->path
+                    path: $data->path . '/stream.mpd'
                 ));
             }
         };

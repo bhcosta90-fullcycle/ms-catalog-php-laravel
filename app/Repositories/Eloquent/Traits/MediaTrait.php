@@ -8,28 +8,26 @@ use BRCas\MV\Domain\Entity\Video;
 
 trait MediaTrait
 {
-    protected function updateMediaTrailer(Video $video, ModelsVideo $model)
+    protected function updateMediaTrailer(Video $entity, ModelsVideo $model)
     {
-        if ($data = $video->trailerFile()) {
-            $model->trailer()->updateOrCreate([
-                'video_id' => $video->id(),
-            ], [
-                'file_path' => $data->path,
-                'media_status' => $data->status->value,
-                'encoded_path' => $data->encoded,
+        if ($trailer = $entity->trailerFile()) {
+            $action = $model->trailer()->first() ? 'update' : 'create';
+            $model->trailer()->{$action}([
+                'file_path' => $trailer->path,
+                'media_status' => (string) $trailer->status->value,
+                'encoded_path' => $trailer->encoded,
                 'type' => (string) MediaTypes::TRAILER->value,
             ]);
         }
     }
 
-    protected function updateMediaVideo(Video $video, ModelsVideo $model) {
-        if ($data = $video->videoFile()) {
-            $model->trailer()->updateOrCreate([
-                'video_id' => $video->id(),
-            ], [
-                'file_path' => $data->path,
-                'media_status' => $data->status->value,
-                'encoded_path' => $data->encoded,
+    protected function updateMediaVideo(Video $entity, ModelsVideo $model) {
+        if ($mediaVideo = $entity->videoFile()) {
+            $action = $model->video()->first() ? 'update' : 'create';
+            $model->video()->{$action}([
+                'file_path' => $mediaVideo->path,
+                'media_status' => (string) $mediaVideo->status->value,
+                'encoded_path' => $mediaVideo->encoded,
                 'type' => (string) MediaTypes::VIDEO->value,
             ]);
         }

@@ -48,7 +48,10 @@ class PhpAmqplib implements AMQPInterface
             'content_type' => 'text/plan',
         ]);
 
-        $this->channel->basic_publish($message);
+        $this->channel->basic_publish(
+            msg: $message,
+            exchange: $exchange
+        );
 
         $this->closeChannel();
         $this->closeConnection();

@@ -87,6 +87,7 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
             'description' => $entity->description,
         ]);
         $this->syncRelationships($model, $entity);
+        $this->syncImagesAndMedia($model, $entity);
 
         return $this->toEntity($model);
     }
@@ -98,6 +99,14 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
     {
         $model = $this->findByModel($video->id);
         return $model->delete();
+    }
+
+    public function updateMedia(Video $video): Video
+    {
+        $model = $this->findByModel($video->id);
+        $this->updateMediaTrailer($video, $model);
+        $this->updateMediaVideo($video, $model);
+        return $this->toEntity($model);
     }
 
     protected function findByModel(string $id): ModelsVideo

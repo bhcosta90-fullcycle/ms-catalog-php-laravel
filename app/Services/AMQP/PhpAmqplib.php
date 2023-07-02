@@ -9,17 +9,83 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class PhpAmqplib implements AMQPInterface
 {
-    protected ?AMQPStreamConnection $connection = null;
+    protected $connection = null;
+
     protected $channel = null;
 
-    public function __construct()
+    public function producer(string $queue, array $payload, string $exchange): void
+    {
+        $this->connect();
+
+        $this->channel->queue_declare($queue, false, true, false, false);
+        $this->channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, true, false);
+        $this->channel->queue_bind($queue, $exchange);
+
+        $message = new AMQPMessage(json_encode($payload), ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
+        $this->channel->basic_publish($message, $exchange);
+
+        $this->closeChannel();
+        $this->closeConnection();
+    }
+
+    public function producerFanout(array $payload, string $exchange): void
+    {
+        $this->connect();
+
+        $this->channel->exchange_declare(
+            exchange: $exchange,
+            type: AMQPExchangeType::FANOUT,
+            passive: false,
+            durable: true,
+            auto_delete: false
+        );
+
+        $message = new AMQPMessage(json_encode($payload), [
+            'content_type' => 'text/plain',
+        ]);
+
+        $this->channel->basic_publish($message, $exchange);
+
+        $this->closeChannel();
+        $this->closeConnection();
+    }
+
+    public function consumer(string $queue, string $exchange, Closure $callback): void
+    {
+        $this->connect();
+
+        $this->channel->queue_declare(
+            queue: $queue,
+            durable: true,
+            auto_delete: false
+        );
+
+        $this->channel->queue_bind(
+            queue: $queue,
+            exchange: $exchange,
+            routing_key: config('ms.queue_name')
+        );
+
+        $this->channel->basic_consume(
+            queue: $queue,
+            callback: $callback
+        );
+
+        while ($this->channel->is_consuming()) {
+            $this->channel->wait();
+        }
+
+        $this->closeChannel();
+        $this->closeConnection();
+    }
+
+    private function connect(): void
     {
         if ($this->connection) {
-            return null;
+            return;
         }
 
         $configs = config('ms.rabbitmq.hosts')[0];
-
         $this->connection = new AMQPStreamConnection(
             host: $configs['host'],
             port: $configs['port'],
@@ -31,78 +97,13 @@ class PhpAmqplib implements AMQPInterface
         $this->channel = $this->connection->channel();
     }
 
-    public function producer(string $queue, array $payload, string $exchange): void
+    private function closeChannel(): void
     {
-        $this->channel->queue_declare($queue, false, true, false, false);
-        $this->channel->exchange_declare($exchange, AMQPExchangeType::DIRECT, false, true, false);
-        $this->channel->queue_bind($queue, $exchange);
-
-        $message = new AMQPMessage(json_encode($payload), [
-            'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT
-        ]);
-        $this->channel->basic_publish($message, $exchange);
-        $this->closeChannel();
-        $this->closeConnection();
-    }
-
-    public function producerFanout(array $payload, string $exchange)
-    {
-        $this->channel->exchange_declare(
-            exchange: $exchange,
-            type: AMQPExchangeType::FANOUT,
-            passive: false,
-            durable: true,
-            auto_delete: false,
-        );
-
-        $message = new AMQPMessage(json_encode($payload), [
-            'content_type' => 'text/plan',
-        ]);
-
-        $this->channel->basic_publish(
-            msg: $message,
-            exchange: $exchange
-        );
-
-        $this->closeChannel();
-        $this->closeConnection();
-    }
-
-    public function consumer(string $queue, string $exchange, Closure $callback): void
-    {
-        $this->channel->exchange_declare(
-            exchange: $exchange,
-            type: AMQPExchangeType::DIRECT,
-            passive: false,
-            durable: true,
-            auto_delete: false,
-        );
-
-        $this->channel->queue_bind(
-            queue: $queue,
-            exchange: $exchange,
-            routing_key: config('ms.queue_name')
-        );
-
-        $this->channel->basic_consume(
-            queue: $queue,
-            callback: $callback,
-        );
-
-        while ($this->channel->is_consuming()) {
-            $this->channel->wait();
-        }
-
-        $this->closeChannel();
-        $this->closeConnection();
-
-    }
-
-    protected function closeChannel() {
         $this->channel->close();
     }
 
-    protected function closeConnection(){
+    private function closeConnection(): void
+    {
         $this->connection->close();
     }
 }

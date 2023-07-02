@@ -1,7 +1,16 @@
-{
-    "video": {
-        "id": "01891895-6ed5-72e5-950d-b2729b6bfd01",
-        "type": "video",
-        "path": "dwapkodwaopkdpkp"
+[
+    {
+        "video": {
+            "id": "018918eb-b3f6-701a-a719-da1d7879c0a1",
+            "type": "trailer",
+            "path": "trailer-encoded"
+        }
+    },
+    {
+        "video": {
+            "id": "018918eb-b3f6-701a-a719-da1d7879c0a1",
+            "type": "video",
+            "path": "video-encoded"
+        }
     }
-}
+]

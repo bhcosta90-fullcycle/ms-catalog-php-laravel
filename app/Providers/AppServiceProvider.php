@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Events\VideoEventManager;
 use App\Services\AMQP\AMQPInterface;
 use App\Services\AMQP\PhpAmqplib;
+use App\Services\AMQP\UnitTest;
 use App\Services\Storage\FileStorage;
 use App\Transactions\DatabaseTransaction;
 use BRCas\CA\UseCase\DatabaseTransactionInterface;
@@ -28,7 +29,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(FileStorageInterface::class, FileStorage::class);
         $this->app->singleton(VideoEventManagerInterface::class, VideoEventManager::class);
 
-        $this->app->bind(AMQPInterface::class, PhpAmqplib::class);
+        $this->app->bind(
+            AMQPInterface::class,
+            $this->app->runningUnitTests() ? UnitTest::class : PhpAmqplib::class
+        );
     }
 
     /**

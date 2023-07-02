@@ -41,6 +41,7 @@ class VideoController extends Controller
             thumbFile: $this->getArrayFromImage($request->file('thumb_file')),
             thumbHalf: $this->getArrayFromImage($request->file('half_file')),
         ));
+
         return ApiAdapter::json($response, Response::HTTP_CREATED);
     }
 

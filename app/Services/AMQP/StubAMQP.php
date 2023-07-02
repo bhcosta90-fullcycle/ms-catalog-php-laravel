@@ -4,7 +4,7 @@ namespace App\Services\AMQP;
 
 use Closure;
 
-class UnitTest implements AMQPInterface
+class StubAMQP implements AMQPInterface
 {
     public function producer(string $queue, array $payload, string $exchange): void
     {

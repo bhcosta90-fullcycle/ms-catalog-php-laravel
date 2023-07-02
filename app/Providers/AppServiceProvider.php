@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Events\VideoEventManager;
 use App\Services\AMQP\AMQPInterface;
 use App\Services\AMQP\PhpAmqplib;
-use App\Services\AMQP\UnitTest;
+use App\Services\AMQP\StubAMQP;
 use App\Services\Storage\FileStorage;
 use App\Transactions\DatabaseTransaction;
 use BRCas\CA\UseCase\DatabaseTransactionInterface;
@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(
             AMQPInterface::class,
-            $this->app->runningUnitTests() ? UnitTest::class : PhpAmqplib::class
+            $this->app->runningUnitTests() ? StubAMQP::class : PhpAmqplib::class
         );
     }
 

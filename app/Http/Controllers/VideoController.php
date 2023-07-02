@@ -41,7 +41,7 @@ class VideoController extends Controller
             thumbFile: $this->getArrayFromImage($request->file('thumb_file')),
             thumbHalf: $this->getArrayFromImage($request->file('half_file')),
         ));
-        return (new VideoResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
+        return ApiAdapter::json($response, Response::HTTP_CREATED);
     }
 
     public function update(UseCase\UpdateVideoUseCase $updateVideoUseCase, string $id, UpdateRequest $request)
@@ -59,7 +59,7 @@ class VideoController extends Controller
             thumbFile: $this->getArrayFromImage($request->file('thumb_file')),
             thumbHalf: $this->getArrayFromImage($request->file('half_file')),
         ));
-        return (new VideoResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
+        return ApiAdapter::json($response);
     }
 
     public function destroy(UseCase\DeleteVideoUseCase $deleteVideoUseCase, string $id)

@@ -4,6 +4,7 @@ namespace App\Adapter;
 
 use App\Http\Resources\DefaultResource;
 use BRCas\CA\Repository\PaginateInterface;
+use Illuminate\Http\Response;
 
 class ApiAdapter
 {
@@ -29,8 +30,8 @@ class ApiAdapter
             ]);
     }
 
-    public static function json(object $data)
+    public static function json(object $data, int $status = Response::HTTP_OK)
     {
-        return new DefaultResource($data);
+        return (new DefaultResource($data))->response()->setStatusCode($status);
     }
 }

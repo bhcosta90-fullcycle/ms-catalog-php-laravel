@@ -33,8 +33,8 @@ trait ImageTrait
     protected function updateImageHalf(Video $video, ModelsVideo $model)
     {
         if ($thumbHalf = $video->thumbHalf()) {
-            $action = $model->thumbHalf()->first() ? 'update' : 'create';
-            $model->thumbHalf()->{$action}([
+            $action = $model->half()->first() ? 'update' : 'create';
+            $model->half()->{$action}([
                 'path' => $thumbHalf->path(),
                 'type' => (string) ImageTypes::THUMB_HALF->value,
             ]);

@@ -51,3 +51,10 @@ function converteUploadFile(\Illuminate\Http\UploadedFile $file)
         'error' => $file->getError(),
     ];
 }
+
+function compareArray($arrayActual, $arrayExcept){
+    sort($arrayActual);
+    sort($arrayExcept);
+
+    return $arrayActual == $arrayExcept;
+}

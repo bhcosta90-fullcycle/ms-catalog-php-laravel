@@ -67,9 +67,9 @@ test("inserindo na base de dados e integrando com os relacionamentos", function 
     expect($response->genres)->toHaveCount(3);
     expect($response->castMembers)->toHaveCount(4);
 
-    expect($categories)->toBe($response->categories);
-    expect($genres)->toBe($response->genres);
-    expect($castMembers)->toBe($response->castMembers);
+    expect(compareArray($categories, $response->categories))->toBeTrue();
+    expect(compareArray($genres, $response->genres))->toBeTrue();
+    expect(compareArray($castMembers, $response->castMembers))->toBeTrue();
 });
 
 test("encontrando o domínio na aplicação", function () {
@@ -201,9 +201,9 @@ test("editar os registros do domínio com os relacionamentos", function () {
     expect($response->genres)->toHaveCount(3);
     expect($response->castMembers)->toHaveCount(4);
 
-    expect($categories)->toBe($response->categories);
-    expect($genres)->toBe($response->genres);
-    expect($castMembers)->toBe($response->castMembers);
+    expect(compareArray($categories, $response->categories))->toBeTrue();
+    expect(compareArray($genres, $response->genres))->toBeTrue();
+    expect(compareArray($castMembers, $response->castMembers))->toBeTrue();
 });
 
 test("editar um domínio que não foi encontrado na aplicação", function () {

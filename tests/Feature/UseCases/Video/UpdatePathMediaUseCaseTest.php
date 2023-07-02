@@ -25,12 +25,12 @@ beforeEach(function () {
         rating: Rating::L,
         createdAt: new DateTime($video->created_at),
     );
-    $this->mockRepository = app(VideoRepositoryInterface::class);
+    $this->repository = app(VideoRepositoryInterface::class);
 });
 
 test("I'm trying update a video without a media file", function () {
     $useCase = new UpdatePathMediaUseCase(
-        repository: $this->mockRepository,
+        repository: $this->repository,
     );
 
     $useCase->execute(new UpdatePathMediaInput(
@@ -44,10 +44,10 @@ test("I'm trying update a video without a media file", function () {
 
 test("I'm trying update a video with a media file", function () {
     $this->entity->setVideoFile(new Media(path: 'test', status: MediaStatus::PENDING));
-    $this->mockRepository->updateMedia($this->entity);
+    $this->repository->updateMedia($this->entity);
 
     $useCase = new UpdatePathMediaUseCase(
-        repository: $this->mockRepository,
+        repository: $this->repository,
     );
 
     $response = $useCase->execute(new UpdatePathMediaInput(
@@ -66,7 +66,7 @@ test("I'm trying update a video with a media file", function () {
 
 test("I'm trying update a trailer without a media file", function () {
     $useCase = new UpdatePathMediaUseCase(
-        repository: $this->mockRepository,
+        repository: $this->repository,
     );
 
     $useCase->execute(new UpdatePathMediaInput(
@@ -80,10 +80,10 @@ test("I'm trying update a trailer without a media file", function () {
 
 test("I'm trying update a trailer with a media file", function () {
     $this->entity->setTrailerFile(new Media(path: 'test', status: MediaStatus::PENDING));
-    $this->mockRepository->updateMedia($this->entity);
+    $this->repository->updateMedia($this->entity);
 
     $useCase = new UpdatePathMediaUseCase(
-        repository: $this->mockRepository,
+        repository: $this->repository,
     );
 
     $response = $useCase->execute(new UpdatePathMediaInput(
@@ -104,7 +104,7 @@ test("I'm trying update a trailer with a media file", function () {
 
 test("exception -> not found video", function () {
     $useCase = new UpdatePathMediaUseCase(
-        repository: $this->mockRepository,
+        repository: $this->repository,
     );
 
     $useCase->execute(new UpdatePathMediaInput(

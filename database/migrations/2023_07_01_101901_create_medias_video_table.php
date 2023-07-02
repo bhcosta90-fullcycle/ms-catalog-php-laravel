@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('file_path');
             $table->string('encoded_path')->nullable();
             $table->enum('media_status', array_keys(MediaStatus::cases()))
-                    ->default(MediaStatus::PENDING->value);
+                ->default(MediaStatus::PENDING->value);
             $table->enum('type', array_keys(MediaTypes::cases()));
             $table->timestamps();
             $table->softDeletes();

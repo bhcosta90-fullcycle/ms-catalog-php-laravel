@@ -1,6 +1,5 @@
 <?php
 
-use BRCas\MV\Domain\Entity\Category;
 use Illuminate\Support\Facades\Route;
 
 /*

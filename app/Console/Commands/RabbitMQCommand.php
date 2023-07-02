@@ -44,7 +44,7 @@ class RabbitMQCommand extends Command
                 $this->updatePathMediaUseCase->execute(new UpdatePathMediaInput(
                     id: $data->id,
                     type: $data->type,
-                    path: $data->path . '/stream.mpd'
+                    path: $data->path.'/stream.mpd'
                 ));
             }
         };

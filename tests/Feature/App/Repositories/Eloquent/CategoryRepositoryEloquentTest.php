@@ -8,12 +8,12 @@ use BRCas\CA\Repository\PaginateInterface;
 use BRCas\MV\Domain\Entity\Category as EntityDomain;
 use BRCas\MV\Domain\Repository\CategoryRepositoryInterface as RepositoryInterface;
 
-test("validando se o repositório tem o contrato", function () {
+test('validando se o repositório tem o contrato', function () {
     $repository = new RepositoryEloquent(new Model());
     expect($repository)->toBeInstanceOf(RepositoryInterface::class);
 });
 
-test("inserindo na base de dados o domínio da aplicação", function () {
+test('inserindo na base de dados o domínio da aplicação', function () {
     $repository = new RepositoryEloquent(new Model());
 
     $response = $repository->insert(new EntityDomain(name: 'testing'));
@@ -25,7 +25,7 @@ test("inserindo na base de dados o domínio da aplicação", function () {
     ]);
 });
 
-test("encontrando o domínio na aplicação", function () {
+test('encontrando o domínio na aplicação', function () {
     $domain = Model::factory()->create();
     $repository = new RepositoryEloquent(new Model());
     $response = $repository->getById($domain->id);
@@ -33,12 +33,12 @@ test("encontrando o domínio na aplicação", function () {
     expect($response)->toBeInstanceOf(EntityDomain::class);
 });
 
-test("domínio não encontrado na aplicação", function () {
+test('domínio não encontrado na aplicação', function () {
     $repository = new RepositoryEloquent(new Model());
     $repository->getById('fake-value');
 })->throws(EntityNotFoundException::class);
 
-test("listar todos os registros do domínio", function () {
+test('listar todos os registros do domínio', function () {
     Model::factory(10)->create();
     $repository = new RepositoryEloquent(new Model());
     $response = $repository->all();
@@ -47,7 +47,7 @@ test("listar todos os registros do domínio", function () {
     expect($response->items())->toHaveCount(10);
 });
 
-test("listar todos os registros do domínio quando estiver vazio", function () {
+test('listar todos os registros do domínio quando estiver vazio', function () {
     $repository = new RepositoryEloquent(new Model());
     $response = $repository->all();
     expect($response)->toBeInstanceOf(ItemInterface::class);
@@ -55,7 +55,7 @@ test("listar todos os registros do domínio quando estiver vazio", function () {
     expect($response->items())->toHaveCount(0);
 });
 
-test("listar todos os registros paginados do domínio", function () {
+test('listar todos os registros paginados do domínio', function () {
     Model::factory(20)->create();
     $repository = new RepositoryEloquent(new Model());
     $response = $repository->paginate();
@@ -70,7 +70,7 @@ test("listar todos os registros paginados do domínio", function () {
     expect($response->perPage())->toBe(15);
 });
 
-test("listar todos os registros paginados do domínio quando estiver vazio", function () {
+test('listar todos os registros paginados do domínio quando estiver vazio', function () {
     $repository = new RepositoryEloquent(new Model());
     $response = $repository->paginate();
     expect($response)->toBeInstanceOf(PaginateInterface::class);
@@ -84,7 +84,7 @@ test("listar todos os registros paginados do domínio quando estiver vazio", fun
     expect($response->perPage())->toBe(15);
 });
 
-test("editar os registros do domínio", function () {
+test('editar os registros do domínio', function () {
     $domain = Model::factory()->create();
     $repository = new RepositoryEloquent(new Model());
     $domain = $repository->getById($domain->id);
@@ -100,14 +100,14 @@ test("editar os registros do domínio", function () {
     ]);
 });
 
-test("editar um domínio que não foi encontrado na aplicação", function () {
+test('editar um domínio que não foi encontrado na aplicação', function () {
     $repository = new RepositoryEloquent(new Model());
     $domain = new EntityDomain(name: 'testing');
     $domain->update(name: 'testing', description: 'description');
     $repository->update($domain);
 })->throws(EntityNotFoundException::class);
 
-test("deletar o domínio", function () {
+test('deletar o domínio', function () {
     $domain = Model::factory()->create();
     $repository = new RepositoryEloquent(new Model());
     $domain = $repository->getById($domain->id);
@@ -120,20 +120,20 @@ test("deletar o domínio", function () {
     ]);
 });
 
-test("deletar o domínio que não foi encontrado na aplicação", function () {
+test('deletar o domínio que não foi encontrado na aplicação', function () {
     $repository = new RepositoryEloquent(new Model());
     $domain = new EntityDomain(name: 'testing');
     $repository->delete($domain);
 })->throws(EntityNotFoundException::class);
 
-test("testando se existe algumas determinadas categorias na base de dados", function () {
+test('testando se existe algumas determinadas categorias na base de dados', function () {
     $categories = Model::factory(4)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
 
     $repository = new RepositoryEloquent(new Model());
     expect($repository->getIdsByListId([$categories[0]])->items())->toHaveCount(1);
 });
 
-test("testando se não existe uma categoria passada", function () {
+test('testando se não existe uma categoria passada', function () {
     $repository = new RepositoryEloquent(new Model());
     expect($repository->getIdsByListId(['123'])->items())->toHaveCount(0);
 });

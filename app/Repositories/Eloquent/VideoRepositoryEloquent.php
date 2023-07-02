@@ -2,8 +2,6 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Enums\ImageTypes;
-use App\Enums\MediaTypes;
 use App\Models\Video as ModelsVideo;
 use App\Repositories\Presenter\ItemPresenter;
 use App\Repositories\Presenter\PaginationPresenter;
@@ -29,7 +27,7 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
     }
 
     /**
-     * @param Video $entity
+     * @param  Video  $entity
      */
     public function insert(EntityAbstract $entity): EntityAbstract
     {
@@ -73,11 +71,12 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
     public function getById(string $id): EntityAbstract
     {
         $model = $this->findByModel($id);
+
         return $this->toEntity($model);
     }
 
     /**
-     * @param Video $entity
+     * @param  Video  $entity
      */
     public function update(EntityAbstract $entity): EntityAbstract
     {
@@ -93,11 +92,12 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
     }
 
     /**
-     * @param Video $video
+     * @param  Video  $video
      */
     public function delete(EntityAbstract $video): bool
     {
         $model = $this->findByModel($video->id);
+
         return $model->delete();
     }
 
@@ -106,12 +106,13 @@ class VideoRepositoryEloquent implements VideoRepositoryInterface
         $model = $this->findByModel($video->id);
         $this->updateMediaTrailer($video, $model);
         $this->updateMediaVideo($video, $model);
+
         return $this->toEntity($model);
     }
 
     protected function findByModel(string $id): ModelsVideo
     {
-        if (!$model = $this->model->find($id)) {
+        if (! $model = $this->model->find($id)) {
             throw new EntityNotFoundException();
         }
 

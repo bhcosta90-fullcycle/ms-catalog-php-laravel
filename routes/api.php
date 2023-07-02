@@ -1,11 +1,9 @@
 <?php
 
-use App\Http\Controllers\{
-    CastMemberController,
-    CategoryController,
-    GenreController,
-    VideoController
-};
+use App\Http\Controllers\CastMemberController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('upload-file', fn() => Storage::put('content', 'tests'));
+Route::get('upload-file', fn () => Storage::put('content', 'tests'));
 
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('genres', GenreController::class);

@@ -12,6 +12,7 @@ class CastMemberController extends Controller
     public function index(UseCase\ListCastMembersUseCase $createCastMemberUseCase)
     {
         $response = $createCastMemberUseCase->execute();
+
         return CastMemberResource::collection(collect($response->items))
             ->additional([
                 'meta' => [
@@ -22,7 +23,7 @@ class CastMemberController extends Controller
                     'per_page' => $response->per_page,
                     'to' => $response->to,
                     'from' => $response->from,
-                ]
+                ],
             ]);
     }
 
@@ -31,6 +32,7 @@ class CastMemberController extends Controller
         $response = $listCastMemberUseCase->execute(new UseCase\DTO\CastMemberInput(
             id: $id,
         ));
+
         return new CastMemberResource($response);
     }
 

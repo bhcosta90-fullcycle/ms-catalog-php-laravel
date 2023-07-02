@@ -25,7 +25,7 @@ class CastMemberRequest extends FormRequest
             'name' => ['required', 'min:3', 'max:255'],
         ];
 
-        if (!request()->route('cast_member')) {
+        if (! request()->route('cast_member')) {
             $rules['type'] = ['required', 'int'];
         }
 

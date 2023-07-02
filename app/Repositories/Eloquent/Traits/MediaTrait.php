@@ -21,7 +21,8 @@ trait MediaTrait
         }
     }
 
-    protected function updateMediaVideo(Video $entity, ModelsVideo $model) {
+    protected function updateMediaVideo(Video $entity, ModelsVideo $model)
+    {
         if ($mediaVideo = $entity->videoFile()) {
             $action = $model->video()->first() ? 'update' : 'create';
             $model->video()->{$action}([

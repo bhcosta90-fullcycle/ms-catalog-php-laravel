@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Media as Model;
-
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,11 +27,10 @@ test('testando se o model tem os casts', function () {
     ]);
 });
 
-test("testando o nome da tabela", function(){
+test('testando o nome da tabela', function () {
     expect(with(new Model)->getTable())->toBe('medias_video');
 });
 
-test("testando se existe a função para vincular o video", function () {
+test('testando se existe a função para vincular o video', function () {
     expect(method_exists(new Model, 'video'))->toBeTrue();
 });
-

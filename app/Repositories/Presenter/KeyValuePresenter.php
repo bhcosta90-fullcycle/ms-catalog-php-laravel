@@ -5,7 +5,6 @@ namespace App\Repositories\Presenter;
 use BRCas\CA\Repository\KeyValueInterface;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use stdClass;
 
 class KeyValuePresenter implements KeyValueInterface
 {

@@ -5,7 +5,7 @@ use BRCas\CA\Repository\PaginateInterface;
 use BRCas\MV\Domain\Repository\VideoRepositoryInterface as RepositoryInterface;
 use BRCas\MV\UseCases\Video as UseCase;
 
-test("testando a integração do caso de uso para listar o domínio quando estiver vazio", function () {
+test('testando a integração do caso de uso para listar o domínio quando estiver vazio', function () {
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\ListVideosUseCase(repository: $repository);
     $response = $useCase->execute();
@@ -22,7 +22,7 @@ test("testando a integração do caso de uso para listar o domínio quando estiv
     expect($response->perPage())->toBe(15);
 });
 
-test("testando a integração do caso de uso para listar o domínio quando não estiver vazio", function () {
+test('testando a integração do caso de uso para listar o domínio quando não estiver vazio', function () {
     Model::factory(20)->create();
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\ListVideosUseCase(repository: $repository);

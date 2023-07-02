@@ -26,7 +26,7 @@ class ApiAdapter
                     'per_page' => $this->response->perPage(),
                     'to' => $this->response->to(),
                     'from' => $this->response->from(),
-                ]
+                ],
             ]);
     }
 

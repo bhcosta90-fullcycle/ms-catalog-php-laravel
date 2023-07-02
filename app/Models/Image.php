@@ -19,7 +19,7 @@ class Image extends Model
     ];
 
     protected $casts = [
-        'type' => 'integer'
+        'type' => 'integer',
     ];
 
     private function video()

@@ -25,7 +25,7 @@ class CastMemberRepositoryEloquent implements CastMemberRepositoryInterface
     }
 
     /**
-     * @param CastMember $category
+     * @param  CastMember  $category
      */
     public function insert(EntityAbstract $category): CastMember
     {
@@ -53,11 +53,12 @@ class CastMemberRepositoryEloquent implements CastMemberRepositoryInterface
     public function getById(string $id): CastMember
     {
         $model = $this->findByModel($id);
+
         return $this->toEntity($model);
     }
 
     /**
-     * @param CastMember $category
+     * @param  CastMember  $category
      */
     public function update(EntityAbstract $category): CastMember
     {
@@ -72,11 +73,12 @@ class CastMemberRepositoryEloquent implements CastMemberRepositoryInterface
     }
 
     /**
-     * @param CastMember $category
+     * @param  CastMember  $category
      */
     public function delete(EntityAbstract $category): bool
     {
         $model = $this->findByModel($category->id);
+
         return $model->delete();
     }
 
@@ -87,7 +89,7 @@ class CastMemberRepositoryEloquent implements CastMemberRepositoryInterface
 
     protected function findByModel(string $id): Model
     {
-        if (!$model = ModelCastMember::find($id)) {
+        if (! $model = ModelCastMember::find($id)) {
             throw new EntityNotFoundException();
         }
 

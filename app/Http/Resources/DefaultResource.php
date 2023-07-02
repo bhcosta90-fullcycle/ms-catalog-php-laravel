@@ -17,6 +17,7 @@ class DefaultResource extends JsonResource
         return collect($this->resource)
             ->mapWithKeys(function ($value, $key) {
                 $key = trim(strtolower(preg_replace('/[A-Z]/', '_$0', $key)));
+
                 return [
                     $key => $value,
                 ];

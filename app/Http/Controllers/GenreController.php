@@ -12,6 +12,7 @@ class GenreController extends Controller
     public function index(UseCase\ListGenresUseCase $createGenreUseCase)
     {
         $response = $createGenreUseCase->execute();
+
         return GenreResource::collection(collect($response->items))
             ->additional([
                 'meta' => [
@@ -22,7 +23,7 @@ class GenreController extends Controller
                     'per_page' => $response->per_page,
                     'to' => $response->to,
                     'from' => $response->from,
-                ]
+                ],
             ]);
     }
 
@@ -31,6 +32,7 @@ class GenreController extends Controller
         $response = $listGenreUseCase->execute(new UseCase\DTO\GenreInput(
             id: $id,
         ));
+
         return new GenreResource($response);
     }
 

@@ -8,7 +8,7 @@ use BRCas\MV\Domain\Repository\CategoryRepositoryInterface;
 use BRCas\MV\Domain\Repository\GenreRepositoryInterface as RepositoryInterface;
 use BRCas\MV\UseCases\Genre as UseCase;
 
-test("testando a integração do caso de uso para editar", function () {
+test('testando a integração do caso de uso para editar', function () {
     $domain = Model::factory()->create();
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\UpdateGenreUseCase(
@@ -24,11 +24,11 @@ test("testando a integração do caso de uso para editar", function () {
 
     $this->assertDatabaseHas('genres', [
         'id' => $domain->id,
-        'name' => 'testing'
+        'name' => 'testing',
     ]);
 });
 
-test("testando a integração do caso de uso para editar com categoria", function () {
+test('testando a integração do caso de uso para editar com categoria', function () {
     $categories = Category::factory(4)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
 
     $domain = Model::factory()->create();
@@ -49,13 +49,13 @@ test("testando a integração do caso de uso para editar com categoria", functio
 
     $this->assertDatabaseHas('genres', [
         'id' => $domain->id,
-        'name' => 'testing'
+        'name' => 'testing',
     ]);
 
     $this->assertDatabaseCount('category_genre', 2);
 });
 
-test("testando a integração do caso de uso para editar com categoria inexistente", function () {
+test('testando a integração do caso de uso para editar com categoria inexistente', function () {
     $categories = Category::factory(4)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
 
     $domain = Model::factory()->create();
@@ -73,9 +73,9 @@ test("testando a integração do caso de uso para editar com categoria inexisten
         name: 'testing',
         categories: ['10', $categories[2], $categories[3]]
     ));
-})->throws(EntityNotFoundException::class, 'Category 10 not found');;
+})->throws(EntityNotFoundException::class, 'Category 10 not found');
 
-test("testando o rollback da transação", function () {
+test('testando o rollback da transação', function () {
     $categories = Category::factory(4)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
 
     $domain = Model::factory()->create();
@@ -92,7 +92,7 @@ test("testando o rollback da transação", function () {
             name: 'testing',
             categories: ['10', $categories[2], $categories[3]]
         ));
-    }catch(Throwable){
+    } catch (Throwable) {
         $this->assertDatabaseHas('genres', [
             'id' => $domain->id,
             'name' => $domain->name,

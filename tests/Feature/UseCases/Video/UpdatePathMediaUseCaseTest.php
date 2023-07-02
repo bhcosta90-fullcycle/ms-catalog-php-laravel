@@ -8,9 +8,9 @@ use BRCas\MV\Domain\Enum\MediaStatus;
 use BRCas\MV\Domain\Enum\Rating;
 use BRCas\MV\Domain\Repository\VideoRepositoryInterface;
 use BRCas\MV\Domain\ValueObject\Media;
-use BRCas\MV\UseCases\Video\UpdatePathMediaUseCase;
 use BRCas\MV\UseCases\Video\DTO\UpdatePathMediaInput;
 use BRCas\MV\UseCases\Video\DTO\VideoOutput;
+use BRCas\MV\UseCases\Video\UpdatePathMediaUseCase;
 
 beforeEach(function () {
     $video = ModelsVideo::factory()->create();
@@ -106,7 +106,7 @@ test("I'm trying update a trailer with a media file", function () {
     $this->assertDatabaseCount('medias_video', 1);
 });
 
-test("exception -> not found video", function () {
+test('exception -> not found video', function () {
     $useCase = new UpdatePathMediaUseCase(
         repository: $this->repository,
     );

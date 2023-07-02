@@ -7,7 +7,7 @@ use BRCas\MV\Domain\Repository\CategoryRepositoryInterface;
 use BRCas\MV\Domain\Repository\GenreRepositoryInterface as RepositoryInterface;
 use BRCas\MV\UseCases\Genre as UseCase;
 
-test("testando a integração do caso de uso para a criação", function () {
+test('testando a integração do caso de uso para a criação', function () {
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\CreateGenreUseCase(
         repository: $repository,
@@ -24,7 +24,7 @@ test("testando a integração do caso de uso para a criação", function () {
     ]);
 });
 
-test("testando a integração do caso de uso para a criação com as categories", function () {
+test('testando a integração do caso de uso para a criação com as categories', function () {
     $categories = Category::factory(4)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
 
     $repository = app(RepositoryInterface::class);
@@ -46,7 +46,7 @@ test("testando a integração do caso de uso para a criação com as categories"
     $this->assertDatabaseCount('category_genre', 4);
 });
 
-test("testando a integração do caso de uso para a criação com categoria inexistente", function () {
+test('testando a integração do caso de uso para a criação com categoria inexistente', function () {
     $categories = Category::factory(4)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\CreateGenreUseCase(
@@ -60,7 +60,7 @@ test("testando a integração do caso de uso para a criação com categoria inex
     ));
 })->throws(EntityNotFoundException::class, 'Category 10 not found');
 
-test("testando o rollback da transação", function () {
+test('testando o rollback da transação', function () {
     $categories = Category::factory(4)->create()->pluck('id')->map(fn ($rs) => (string) $rs)->toArray();
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\CreateGenreUseCase(
@@ -73,7 +73,7 @@ test("testando o rollback da transação", function () {
             name: 'testing genre',
             categories: array_merge($categories, ['10'])
         ));
-    }catch(Throwable) {
+    } catch (Throwable) {
         $this->assertDatabaseCount('genres', 0);
         $this->assertDatabaseCount('category_genre', 0);
     }

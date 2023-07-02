@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\Video as Model;
 use App\Models\Traits\UuidTrait;
-
+use App\Models\Video as Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tests\Unit\Models\Actions\ModelTestCase;
@@ -33,12 +32,12 @@ test('testando se o model tem os casts', function () {
     ]);
 });
 
-test("testando se existe a função para vincular", function ($action) {
+test('testando se existe a função para vincular', function ($action) {
     expect(method_exists(new Model, $action))->toBeTrue();
 })->with([
     'trailer',
     'video',
     'banner',
     'thumb',
-    'half'
+    'half',
 ]);

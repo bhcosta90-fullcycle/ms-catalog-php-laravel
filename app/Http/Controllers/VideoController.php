@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Adapter\ApiAdapter;
-use App\Http\Requests\Video\{StoreRequest, UpdateRequest};
-use App\Http\Resources\VideoResource;
+use App\Http\Requests\Video\StoreRequest;
+use App\Http\Requests\Video\UpdateRequest;
 use BRCas\MV\UseCases\Video as UseCase;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
@@ -14,12 +14,14 @@ class VideoController extends Controller
     public function index(UseCase\ListVideosUseCase $listVideosUseCase)
     {
         $response = $listVideosUseCase->execute();
+
         return (new ApiAdapter($response))->toJson();
     }
 
     public function show(UseCase\ListVideoUseCase $listVideoUseCase, string $id)
     {
         $response = $listVideoUseCase->execute(new UseCase\DTO\ListVideoInput(id: $id));
+
         return ApiAdapter::json($response);
     }
 
@@ -60,6 +62,7 @@ class VideoController extends Controller
             thumbFile: $this->getArrayFromImage($request->file('thumb_file')),
             thumbHalf: $this->getArrayFromImage($request->file('half_file')),
         ));
+
         return ApiAdapter::json($response);
     }
 

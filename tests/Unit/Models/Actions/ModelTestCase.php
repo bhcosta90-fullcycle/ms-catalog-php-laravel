@@ -19,18 +19,21 @@ class ModelTestCase
     public function fillable(array $fillable)
     {
         expect($fillable)->toBe($this->model->getFillable());
+
         return $this;
     }
 
     public function traits(array $traits)
     {
         expect($traits)->toBe(array_values(class_uses($this->model)));
+
         return $this;
     }
 
     public function casts(array $casts)
     {
         expect($casts)->toBe($this->model->getCasts());
+
         return $this;
     }
 }

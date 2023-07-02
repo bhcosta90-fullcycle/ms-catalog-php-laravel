@@ -2,18 +2,14 @@
 
 namespace App\Providers;
 
-use App\Repositories\Eloquent\{
-    CastMemberRepositoryEloquent,
-    CategoryRepositoryEloquent,
-    GenreRepositoryEloquent,
-    VideoRepositoryEloquent
-};
-use BRCas\MV\Domain\Repository\{
-    CastMemberRepositoryInterface,
-    CategoryRepositoryInterface,
-    GenreRepositoryInterface,
-    VideoRepositoryInterface
-};
+use App\Repositories\Eloquent\CastMemberRepositoryEloquent;
+use App\Repositories\Eloquent\CategoryRepositoryEloquent;
+use App\Repositories\Eloquent\GenreRepositoryEloquent;
+use App\Repositories\Eloquent\VideoRepositoryEloquent;
+use BRCas\MV\Domain\Repository\CastMemberRepositoryInterface;
+use BRCas\MV\Domain\Repository\CategoryRepositoryInterface;
+use BRCas\MV\Domain\Repository\GenreRepositoryInterface;
+use BRCas\MV\Domain\Repository\VideoRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

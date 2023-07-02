@@ -24,7 +24,7 @@ class GenreRepositoryEloquent implements GenreRepositoryInterface
     }
 
     /**
-     * @param Genre $genre
+     * @param  Genre  $genre
      */
     public function insert(EntityAbstract $genre): Genre
     {
@@ -53,11 +53,12 @@ class GenreRepositoryEloquent implements GenreRepositoryInterface
     public function getById(string $id): Genre
     {
         $model = $this->findByModel($id);
+
         return $this->toEntity($model);
     }
 
     /**
-     * @param Genre $genre
+     * @param  Genre  $genre
      */
     public function update(EntityAbstract $genre): Genre
     {
@@ -72,11 +73,12 @@ class GenreRepositoryEloquent implements GenreRepositoryInterface
     }
 
     /**
-     * @param Genre $genre
+     * @param  Genre  $genre
      */
     public function delete(EntityAbstract $genre): bool
     {
         $model = $this->findByModel($genre->id);
+
         return $model->delete();
     }
 
@@ -85,8 +87,9 @@ class GenreRepositoryEloquent implements GenreRepositoryInterface
         return new KeyValuePresenter($this->model->whereIn('id', $categories), 'id', 'name');
     }
 
-    protected function findByModel(string $id): Model {
-        if (!$model = ModelGenre::find($id)) {
+    protected function findByModel(string $id): Model
+    {
+        if (! $model = ModelGenre::find($id)) {
             throw new EntityNotFoundException();
         }
 

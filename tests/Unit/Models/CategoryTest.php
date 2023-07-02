@@ -2,7 +2,6 @@
 
 use App\Models\Category as Model;
 use App\Models\Traits\UuidTrait;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tests\Unit\Models\Actions\ModelTestCase;

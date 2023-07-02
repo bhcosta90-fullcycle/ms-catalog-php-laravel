@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Services\AMQP\AMQPInterface;
 use BRCas\MV\Domain\Event\VideoCreateEvent;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendVideoToMicroEncoderListener
 {
@@ -24,6 +22,6 @@ class SendVideoToMicroEncoderListener
             exchange: config('ms.micro_encoder_go.exchange')
         );
 
-        \Log::info($event->name() . ': ' . json_encode((array) $event->payload()));
+        \Log::info($event->name().': '.json_encode((array) $event->payload()));
     }
 }

@@ -12,6 +12,7 @@ class CategoryController extends Controller
     public function index(UseCase\ListCategoriesUseCase $createCategoryUseCase)
     {
         $response = $createCategoryUseCase->execute();
+
         return CategoryResource::collection(collect($response->items))
             ->additional([
                 'meta' => [
@@ -22,7 +23,7 @@ class CategoryController extends Controller
                     'per_page' => $response->per_page,
                     'to' => $response->to,
                     'from' => $response->from,
-                ]
+                ],
             ]);
     }
 
@@ -31,6 +32,7 @@ class CategoryController extends Controller
         $response = $listCategoryUseCase->execute(new UseCase\DTO\CategoryInput(
             id: $id,
         ));
+
         return new CategoryResource($response);
     }
 
@@ -45,7 +47,8 @@ class CategoryController extends Controller
         return (new CategoryResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function update(UseCase\UpdateCategoryUseCase $updateCategoryUseCase, CategoryRequest $request, string $id) {
+    public function update(UseCase\UpdateCategoryUseCase $updateCategoryUseCase, CategoryRequest $request, string $id)
+    {
         $response = $updateCategoryUseCase->execute(new UseCase\DTO\UpdateCategory\Input(
             id: $id,
             name: $request->name,
@@ -56,7 +59,8 @@ class CategoryController extends Controller
         return new CategoryResource($response);
     }
 
-    public function destroy(UseCase\DeleteCategoryUseCase $deleteCategoryUseCase, string $id) {
+    public function destroy(UseCase\DeleteCategoryUseCase $deleteCategoryUseCase, string $id)
+    {
         $deleteCategoryUseCase->execute(new UseCase\DTO\CategoryInput(
             id: $id,
         ));

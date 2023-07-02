@@ -5,7 +5,7 @@ use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use BRCas\MV\Domain\Repository\CastMemberRepositoryInterface as RepositoryInterface;
 use BRCas\MV\UseCases\CastMember as UseCase;
 
-test("testando a integração do caso de uso para buscar o domínio", function () {
+test('testando a integração do caso de uso para buscar o domínio', function () {
     $domain = Model::factory()->create();
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\ListCastMemberUseCase(repository: $repository);
@@ -18,10 +18,10 @@ test("testando a integração do caso de uso para buscar o domínio", function (
     ]);
 });
 
-test("testando a integração do caso de uso para buscar o domínio -> exception", function () {
+test('testando a integração do caso de uso para buscar o domínio -> exception', function () {
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\ListCastMemberUseCase(repository: $repository);
     $useCase->execute(new UseCase\DTO\CastMemberInput(
-        id: "fake-id",
+        id: 'fake-id',
     ));
 })->throws(EntityNotFoundException::class);

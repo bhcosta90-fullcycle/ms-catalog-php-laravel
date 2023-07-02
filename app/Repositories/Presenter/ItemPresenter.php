@@ -19,6 +19,7 @@ class ItemPresenter implements ItemInterface
             items: $data
         );
     }
+
     /** @return stdClass[] */
     public function items(): array
     {

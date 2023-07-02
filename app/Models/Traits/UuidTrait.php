@@ -2,7 +2,8 @@
 
 namespace App\Models\Traits;
 
-trait UuidTrait {
+trait UuidTrait
+{
     public function getIncrementing()
     {
         return false;

@@ -23,7 +23,7 @@ class CategoryRepositoryEloquent implements CategoryRepositoryInterface
     }
 
     /**
-     * @param Category $category
+     * @param  Category  $category
      */
     public function insert(EntityAbstract $category): Category
     {
@@ -51,11 +51,12 @@ class CategoryRepositoryEloquent implements CategoryRepositoryInterface
     public function getById(string $id): Category
     {
         $model = $this->findByModel($id);
+
         return $this->toEntity($model);
     }
 
     /**
-     * @param Category $category
+     * @param  Category  $category
      */
     public function update(EntityAbstract $category): Category
     {
@@ -70,11 +71,12 @@ class CategoryRepositoryEloquent implements CategoryRepositoryInterface
     }
 
     /**
-     * @param Category $category
+     * @param  Category  $category
      */
     public function delete(EntityAbstract $category): bool
     {
         $model = $this->findByModel($category->id);
+
         return $model->delete();
     }
 
@@ -83,8 +85,9 @@ class CategoryRepositoryEloquent implements CategoryRepositoryInterface
         return new KeyValuePresenter($this->model->whereIn('id', $categories), 'id', 'name');
     }
 
-    protected function findByModel(string $id): Model {
-        if (!$model = ModelCategory::find($id)) {
+    protected function findByModel(string $id): Model
+    {
+        if (! $model = ModelCategory::find($id)) {
             throw new EntityNotFoundException();
         }
 

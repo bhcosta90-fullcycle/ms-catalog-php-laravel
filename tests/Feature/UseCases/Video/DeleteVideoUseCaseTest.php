@@ -5,7 +5,7 @@ use BRCas\CA\Domain\Exceptions\EntityNotFoundException;
 use BRCas\MV\Domain\Repository\VideoRepositoryInterface as RepositoryInterface;
 use BRCas\MV\UseCases\Video as UseCase;
 
-test("testando a integração do caso de uso para deletar", function () {
+test('testando a integração do caso de uso para deletar', function () {
     $domain = Model::factory()->create();
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\DeleteVideoUseCase(repository: $repository);
@@ -18,7 +18,7 @@ test("testando a integração do caso de uso para deletar", function () {
     ]);
 });
 
-test("testando a integração do caso de uso para deletar -> exception", function () {
+test('testando a integração do caso de uso para deletar -> exception', function () {
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\DeleteVideoUseCase(repository: $repository);
     $useCase->execute(new UseCase\DTO\ListVideoInput(

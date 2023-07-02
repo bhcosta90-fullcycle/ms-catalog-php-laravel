@@ -42,7 +42,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function converteUploadFile(\Illuminate\Http\UploadedFile $file)
+function converteUploadFile(Illuminate\Http\UploadedFile $file)
 {
     return [
         'tmp_name' => $file->getPathname(),
@@ -52,7 +52,8 @@ function converteUploadFile(\Illuminate\Http\UploadedFile $file)
     ];
 }
 
-function compareArray($arrayActual, $arrayExcept){
+function compareArray($arrayActual, $arrayExcept)
+{
     sort($arrayActual);
     sort($arrayExcept);
 

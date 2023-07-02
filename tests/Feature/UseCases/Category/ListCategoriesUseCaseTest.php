@@ -4,7 +4,7 @@ use App\Models\Category as Model;
 use BRCas\MV\Domain\Repository\CategoryRepositoryInterface as RepositoryInterface;
 use BRCas\MV\UseCases\Category as UseCase;
 
-test("testando a integração do caso de uso para listar o domínio quando estiver vazio", function () {
+test('testando a integração do caso de uso para listar o domínio quando estiver vazio', function () {
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\ListCategoriesUseCase(repository: $repository);
     $response = $useCase->execute();
@@ -19,7 +19,7 @@ test("testando a integração do caso de uso para listar o domínio quando estiv
     expect($response->per_page)->toBe(15);
 });
 
-test("testando a integração do caso de uso para listar o domínio quando não estiver vazio", function () {
+test('testando a integração do caso de uso para listar o domínio quando não estiver vazio', function () {
     Model::factory(20)->create();
     $repository = app(RepositoryInterface::class);
     $useCase = new UseCase\ListCategoriesUseCase(repository: $repository);

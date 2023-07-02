@@ -4,7 +4,7 @@ use BRCas\CA\UseCase\FileStorageInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-test("store", function (){
+test('store', function () {
     $fakeFile = UploadedFile::fake()->create('video.mp', 1, 'video/mp4');
 
     $file = [
@@ -24,7 +24,7 @@ test("store", function (){
     Storage::delete($path);
 });
 
-test("delete", function(){
+test('delete', function () {
     $file = UploadedFile::fake()->create('video.mp', 1, 'video/mp4');
     $path = $file->store('videos');
 

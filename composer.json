@@ -82,7 +82,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/bhcosta90-fullcycle/package-ms-catalog-php"
+            "url": "https://github.com/bhcosta90-fullcycle/ms-catalog-php-package"
         }
     ],
     "minimum-stability": "stable",
